@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contratos/whatsapp-closer-agent/entrada/1.json",
+  "title": "Entrada del Cerrador de WhatsApp",
+  "description": "Un mensaje entrante de WhatsApp, más el catálogo, la disponibilidad y el playbook de objeciones que el agente necesita para contestarlo.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "mensaje", "playbook"],
+  "properties": {
+    "version": {
+      "const": "1",
+      "description": "Fijo. Sin esto no se sabe contra qué versión del contrato te están hablando."
+    },
+    "mensaje": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["de", "tipo"],
+      "description": "Lo que llegó por el webhook de la API de WhatsApp Cloud, ya desenvuelto.",
+      "properties": {
+        "de": {
+          "type": "string",
+          "description": "Número del contacto en formato internacional, sin espacios ni signos."
+        },
+        "tipo": {
+          "enum": ["texto", "audio", "imagen"],
+          "description": "Los tres que la ficha declara. El audio se transcribe en el paso 1 y la imagen se describe."
+        },
+        "texto": {
+          "type": ["string", "null"],
+          "description": "Nulo cuando el tipo es audio o imagen y todavía no se transcribió."
+        },
+        "media_url": {
+          "type": ["string", "null"],
+          "description": "Enlace temporal al audio o a la imagen. Caduca: si vino nulo, no se puede recuperar después."
+        },
+        "recibido_en": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "Momento del mensaje. Sirve para saber si la ventana de 24 horas de WhatsApp sigue abierta."
+        }
+      }
+    },
+    "modo": {
+      "enum": ["borrador", "automatico"],
+      "default": "borrador",
+      "description": "TODO(humano) S01: en `borrador` los pasos 3, 4 y 5 muestran lo que van a hacer y esperan confirmación. La ficha marca esos pasos como destructivos pero no dice si el agente contesta solo. Ver SUPUESTOS.md"
+    },
+    "confirmado": {
+      "type": "boolean",
+      "default": false,
+      "description": "La confirmación explícita de esta llamada. Llamar a un paso destructivo con esto en falso es exactamente lo que prueban las aserciones 3, 4 y 5."
+    },
+    "playbook": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["objeciones"],
+      "description": "TODO(humano) S02: la ficha nombra «las 5 objeciones típicas» y no las lista. Van acá, escritas por quien vende. Ver SUPUESTOS.md",
+      "properties": {
+        "objeciones": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Una objeción por elemento, con la respuesta que se da. Si la objeción del contacto no está acá, el agente la nombra y no la improvisa.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["objecion", "respuesta"],
+            "properties": {
+              "objecion": { "type": "string" },
+              "respuesta": { "type": "string" }
+            }
+          }
+        },
+        "tono": {
+          "type": ["string", "null"],
+          "description": "Cómo habla la marca, en dos o tres líneas. Sin esto el agente usa el registro neutro."
+        }
+      }
+    },
+    "catalogo": {
+      "type": "array",
+      "description": "Lo que se vende, con precio. Un precio que no está acá no existe: el agente no lo inventa.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["nombre", "precio"],
+        "properties": {
+          "nombre": { "type": "string" },
+          "precio": { "type": "number" },
+          "moneda": { "type": "string" }
+        }
+      }
+    },
+    "rango_precio": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Fuera de este rango el paso 6 escala. Nulo desactiva ese disparador y deja solo el enojo y las palabras clave.",
+      "properties": {
+        "minimo": { "type": "number" },
+        "maximo": { "type": "number" }
+      }
+    },
+    "disponibilidad": {
+      "type": "array",
+      "description": "Horarios libres reales. El paso 3 ofrece tres de acá y ninguno inventado.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["inicio"],
+        "properties": {
+          "inicio": { "type": "string", "format": "date-time" },
+          "duracion_min": { "type": "integer", "default": 30 }
+        }
+      }
+    },
+    "opciones_horario": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "default": 3,
+      "description": "TODO(humano) S04: cuántos horarios ofrece el paso 3, dentro de los próximos 5 días hábiles. El número no sale de la ficha. Ver SUPUESTOS.md"
+    },
+    "umbrales": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "TODO(humano) S03: los cortes del score. La ficha pide calificar y no dice con qué escala. Ver SUPUESTOS.md",
+      "properties": {
+        "caliente": { "type": "integer", "default": 70 },
+        "tibio": { "type": "integer", "default": 40 }
+      }
+    },
+    "palabras_escalacion": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": ["humano", "persona real", "reclamo", "abogado", "estafa", "cancelar"],
+      "description": "TODO(humano) S08: la lista por defecto la puso la forja. La ficha dice «palabra clave de escalación» sin enumerarlas. Ver SUPUESTOS.md"
+    },
+    "canal_interno": {
+      "type": ["string", "null"],
+      "description": "Dónde avisa el paso 6. Un canal de Slack, o un número interno de WhatsApp si no hay Slack."
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "whatsapp-closer-agentkit",
+  "version": "0.1.0",
+  "description": "Agente que atiende cada chat entrante de WhatsApp con perfil de setter y closer: califica, responde objeciones, agenda y deja todo escrito en el CRM.",
+  "author": {
+    "name": "Hainrixz",
+    "url": "https://github.com/Hainrixz"
+  },
+  "homepage": "https://github.com/Hainrixz/whatsapp-closer-agentkit",
+  "repository": "https://github.com/Hainrixz/whatsapp-closer-agentkit.git",
+  "license": "MIT",
+  "keywords": [
+    "agent",
+    "claude-code",
+    "la-forja",
+    "whatsapp",
+    "closer"
+  ],
+  "engines": {
+    "claude-code": ">=2.0.0"
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "contratos/whatsapp-closer-agent/salida/1.json",
+  "title": "Salida del Cerrador de WhatsApp",
+  "description": "Conversación atendida, lead calificado con score, cita agendada, registro en el CRM y handoff a humano cuando aplica.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "estado", "contacto", "calificacion", "pasos"],
+  "properties": {
+    "version": { "const": "1" },
+    "estado": {
+      "enum": ["ok", "parcial", "escalado", "detenido"],
+      "description": "`parcial` cuando un paso destructivo no corrió por falta de confirmación o de credencial. `escalado` cuando se disparó el paso 6. `detenido` cuando el agente paró y preguntó."
+    },
+    "contacto": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["numero"],
+      "properties": {
+        "numero": { "type": "string" },
+        "nuevo": { "type": "boolean" },
+        "mensajes_previos": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "calificacion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["score", "temperatura"],
+      "properties": {
+        "score": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "TODO(humano) S03: la escala de 0 a 100 y los cortes los puso la forja. Ver SUPUESTOS.md"
+        },
+        "temperatura": { "enum": ["caliente", "tibio", "frio"] },
+        "intencion": { "type": ["string", "null"] },
+        "presupuesto": {
+          "type": ["number", "null"],
+          "description": "Nulo cuando no lo dijeron y no se deduce. Nunca se inventa: el score se calcula sin ese factor."
+        },
+        "urgencia": { "enum": ["alta", "media", "baja", null] },
+        "motivo": {
+          "type": ["string", "null"],
+          "description": "Una línea. Por qué ese score y no otro."
+        }
+      }
+    },
+    "respuesta": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Nulo mientras el paso 3 no haya mandado. En modo borrador el texto queda acá con `enviado` en falso.",
+      "properties": {
+        "texto": { "type": "string" },
+        "enviado": { "type": "boolean" },
+        "objecion_detectada": { "type": ["string", "null"] },
+        "objecion_en_playbook": {
+          "type": "boolean",
+          "description": "En falso, el agente la nombró y no la respondió. Eso es material para el humano, no una falla."
+        },
+        "horarios_ofrecidos": {
+          "type": "array",
+          "items": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "cita": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Nulo mientras el paso 4 no haya creado el evento con confirmación explícita.",
+      "properties": {
+        "evento_id": { "type": "string" },
+        "inicio": { "type": "string", "format": "date-time" },
+        "duracion_min": { "type": "integer" },
+        "confirmacion_enviada": { "type": "boolean" },
+        "recordatorio_programado": {
+          "type": "boolean",
+          "description": "TODO(humano) S05: 24 horas antes, y sale por WhatsApp y no por invitación de calendario. Ver SUPUESTOS.md"
+        }
+      }
+    },
+    "crm": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "TODO(humano) S06: la ficha dice «el CRM» sin nombrarlo. El default es una tabla `leads` en Supabase. Ver SUPUESTOS.md",
+      "properties": {
+        "etapa": { "enum": ["nuevo", "calificado", "agendado", "cerrado", "perdido", "escalado"] },
+        "resumen": {
+          "type": "string",
+          "description": "Tres líneas: qué quería, qué se le respondió, qué falta. Nunca la conversación entera."
+        },
+        "proximo_paso": { "type": ["string", "null"] },
+        "proximo_paso_fecha": { "type": ["string", "null"], "format": "date" },
+        "escrito": { "type": "boolean" }
+      }
+    },
+    "handoff": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Nulo cuando no se disparó el paso 6.",
+      "properties": {
+        "motivo": { "enum": ["enojo", "precio_fuera_de_rango", "palabra_clave"] },
+        "disparador": {
+          "type": ["string", "null"],
+          "description": "Qué lo activó: la palabra encontrada, o el monto que quedó fuera del rango."
+        },
+        "avisado_en": {
+          "type": ["string", "null"],
+          "description": "TODO(humano) S09: el aviso sale por un webhook entrante de Slack. Ver SUPUESTOS.md"
+        }
+      }
+    },
+    "pasos": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "description": "Uno por paso del proceso, en orden. Seis, siempre: es lo que permite ver dónde se cortó.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["n", "estado"],
+        "properties": {
+          "n": { "type": "integer", "minimum": 1, "maximum": 6 },
+          "estado": { "enum": ["hecho", "salteado", "fallado", "sin-confirmar"] },
+          "motivo": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "pregunta": {
+      "type": ["string", "null"],
+      "description": "Una sola, y solo cuando el estado es `detenido`. Se tiene que poder contestar en una línea."
+    },
+    "supuestos": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Identificadores de SUPUESTOS.md que se aplicaron en esta corrida."
+    }
+  }
+}
