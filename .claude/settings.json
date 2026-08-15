@@ -1,5 +1,66 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+
+  "//": {
+    "por-que-las-notas-van-aca": [
+      "JSON no admite `//` de comentario, y Claude Code no avisa: con una sola línea",
+      "comentada deja de leer el archivo y ninguna regla de `allow` se aplica. Probado.",
+      "El esquema acepta propiedades extra, así que las notas viven en esta clave."
+    ],
+    "compuerta": [
+      "`Bash(.venv/bin/python scripts/auditar.py:*)` va nombrada aunque",
+      "`Bash(.venv/bin/python:*)` ya la cubra de rebote. La pide",
+      "`blueprint/00-contrato.md` § 5, y una regla nombrada sobrevive a que la otra",
+      "se recorte."
+    ],
+    "windows": [
+      "El intérprete del venv en Windows va en sus dos formas y las dos hacen falta:",
+      "`.venv\\Scripts\\python.exe` es la que escribe PowerShell, y",
+      "`.venv/Scripts/python.exe` es la que escribe Git Bash. El kit dicta la de Git",
+      "Bash en `blueprint/00-contrato.md`, `blueprint/10-entorno.md`,",
+      "`blueprint/20-entrevista.md` y `blueprint/90-auditoria.md`. Con una sola de las",
+      "dos, la mitad de los Windows pide permiso en cada corrida de la compuerta.",
+      "`pip` y `uvicorn` no repiten: con barras normales el kit los llama siempre como",
+      "`python.exe -m …`, que ya queda cubierto."
+    ],
+    "railway": [
+      "Granular y no `Bash(railway:*)`: los comandos del despliegue son estos siete y",
+      "se conocen de antemano. El comodín también habilitaría `railway delete`,",
+      "`railway unlink` y `railway variables`, que no son parte del camino."
+    ],
+    "railway-variables": [
+      "`railway variables` no está, en ninguna de sus dos formas, y es a propósito.",
+      "Leerlo imprime los valores en el transcripto; `--set` mete una credencial",
+      "adentro de una tool call. Es el invariante 4. Los valores los escribe quien",
+      "instala, en el tablero o con el prefijo `!`, y eso no pasa por los permisos.",
+      "La verificación de ese paso es `curl -s https://<tu-dominio>/salud`, contra el",
+      "dominio, y las reglas de `curl` de acá llegan hasta `localhost` y `127.0.0.1`:",
+      "la local sale sin preguntar, la del dominio pide permiso igual, de a una vez.",
+      "Ver `blueprint/50-despliegue.md`, paso 4."
+    ],
+    "tuneles": [
+      "`cloudflared` y `ngrok`, sólo en las formas que usa",
+      "`blueprint/50-despliegue.md`, paso 1."
+    ],
+    "curl": [
+      "Acotado a `localhost` y `127.0.0.1`. Un `Bash(curl:*)` abierto es salida a",
+      "internet sin preguntar: alcanza para mandar el contenido de un archivo a",
+      "cualquier host. El blueprint no lo usa sólo para `/salud`:",
+      "`blueprint/35-panel-api.md` lo corre también contra `/webhook/meta`,",
+      "`/api/leads`, `/api/pendientes/1/aprobar` y `/panel`. Los nueve comandos van",
+      "escritos `http://localhost:8000/…`, con el esquema adelante, porque estas seis",
+      "reglas lo exigen: `localhost:8000/salud` pelado no matchea ninguna y pide",
+      "permiso igual. Las reglas cubren la forma `curl <url>`, `curl -s <url>` y",
+      "`curl -i <url>`; con más banderas antes de la URL —`-o`, `-w`, `-H`, `-X`,",
+      "`-D`— el comando ya no empieza por el prefijo y también pide permiso, de a una",
+      "vez. Contra el dominio de Railway se pide permiso siempre."
+    ],
+    "git": [
+      "Sólo lectura. `git add`, `git commit` y `git push` no están y no se agregan:",
+      "los propone `/publicar` y los confirma quien instala."
+    ]
+  },
+
   "permissions": {
     "defaultMode": "default",
     "allow": [
@@ -11,6 +72,7 @@
       "Bash(python3 -m pip install -r requirements.txt:*)",
       "Bash(python3 -m pytest:*)",
 
+      "Bash(.venv/bin/python scripts/auditar.py:*)",
       "Bash(.venv/bin/python:*)",
       "Bash(.venv/bin/python3:*)",
       "Bash(.venv/bin/pip:*)",
@@ -19,13 +81,39 @@
       "Bash(.venv/bin/ruff:*)",
       "Bash(${CLAUDE_PROJECT_DIR}/.venv/bin/python:*)",
       "Bash(.venv\\Scripts\\python.exe:*)",
+      "Bash(.venv/Scripts/python.exe:*)",
       "Bash(.venv\\Scripts\\pip.exe:*)",
       "Bash(.venv\\Scripts\\uvicorn.exe:*)",
       "Bash(ruff check:*)",
       "Bash(ruff format:*)",
+
       "Bash(git status:*)",
       "Bash(git diff:*)",
       "Bash(git log:*)",
+      "Bash(git ls-files:*)",
+      "Bash(git check-ignore:*)",
+      "Bash(git rev-parse:*)",
+
+      "Bash(railway --version:*)",
+      "Bash(railway login:*)",
+      "Bash(railway init:*)",
+      "Bash(railway up:*)",
+      "Bash(railway logs:*)",
+      "Bash(railway status:*)",
+      "Bash(railway add:*)",
+
+      "Bash(cloudflared --version:*)",
+      "Bash(cloudflared tunnel:*)",
+      "Bash(ngrok version:*)",
+      "Bash(ngrok http:*)",
+
+      "Bash(curl http://localhost:*)",
+      "Bash(curl -s http://localhost:*)",
+      "Bash(curl -i http://localhost:*)",
+      "Bash(curl http://127.0.0.1:*)",
+      "Bash(curl -s http://127.0.0.1:*)",
+      "Bash(curl -i http://127.0.0.1:*)",
+
       "Read(./blueprint/**)",
       "Read(./contratos/**)",
       "Read(./plantillas/**)",

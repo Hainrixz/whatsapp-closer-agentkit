@@ -26,8 +26,8 @@ ls: agente: No such file or directory
 ```
 
 Lo que se envía son instrucciones, contratos, pruebas y una compuerta. Se clona, se abre Claude
-Code adentro de la carpeta, y se corre `/armar-cerrador`. Claude lee el blueprint fase por fase
-y **escribe el código en tu máquina**, contra tus versiones y tu sistema operativo.
+Code adentro de la carpeta, y se corre `/start`. Claude lee el blueprint fase por fase y
+**escribe el código en tu máquina**, contra tus versiones y tu sistema operativo.
 
 La razón es de ingeniería y no de estilo: un `pip install` a veces no anda, y no anda distinto
 en cada computadora. Un blueprint que dice qué hacer, qué tenés que ver en pantalla, y qué
@@ -36,11 +36,11 @@ hacer cuando eso no aparece, sobrevive a esa diferencia. Un tarball de código, 
 ```bash
 git clone https://github.com/Hainrixz/whatsapp-closer-agentkit
 cd whatsapp-closer-agentkit
-claude          # y adentro:  /armar-cerrador
+claude          # y adentro:  /start
 ```
 
 **Se clona, no se instala con `/plugin install`.** `.claude-plugin/plugin.json` existe para que
-el marketplace pueda listarlo, y declara cero componentes a propósito: los diez comandos leen
+el marketplace pueda listarlo, y declara cero componentes a propósito: los once comandos leen
 `blueprint/`, `scripts/` y `pruebas/` con `${CLAUDE_PROJECT_DIR}`, y eso son los archivos del
 clon. Instalado como plugin, esas rutas apuntan al proyecto de otro.
 
@@ -51,11 +51,11 @@ API de Anthropic. Lo demás lo pide el blueprint cuando le toca.
 
 | Carpeta | Qué es |
 |---|---|
-| `blueprint/` | quince archivos, uno por fase. Cada paso trae Objetivo, Hacé esto, Tenés que ver, Si falla |
+| `blueprint/` | dieciséis archivos, uno por fase. Cada paso trae Objetivo, Hacé esto, Tenés que ver, Si falla |
 | `contratos/` | entrada y salida en JSON Schema. `additionalProperties: false` en los dos niveles |
 | `pruebas/` | la suite y los fixtures crudos, incluidas dos entregas grabadas con su firma |
 | `plantillas/` | los archivos que se copian verbatim, cada uno con su sha256 en `MANIFIESTO.json` |
-| `.claude/skills/` | los diez comandos |
+| `.claude/skills/` | los once comandos |
 | `scripts/auditar.py` | la compuerta: veintitrés chequeos, sin red y sin credenciales |
 | `PINES.md` | las 30 dependencias, el modelo y la imagen. Ningún número vive en dos lados |
 
@@ -163,7 +163,8 @@ Viven en `.claude/skills/`. Los que construyen abren el archivo de `blueprint/` 
 
 | Comando | Qué hace |
 |---|---|
-| `/armar-cerrador` | construye el cerrador entero, fase por fase. Es la primera corrida |
+| `/start` | de un clon recién bajado a un cerrador andando: mide el terreno, dice lo que cuesta y lo que tarda, entrevista, construye y despliega local o en Railway. Es la primera corrida |
+| `/armar-cerrador` | construye el cerrador entero, fase por fase. `/start` recorre los mismos archivos, con el arranque y el cierre alrededor; éste sigue aparte para quien ya sabe dónde está parado |
 | `/seguir` | retoma una construcción a medias: reconcilia el estado contra el disco antes de escribir |
 | `/configurar` | las preguntas 5 a 9: catálogo, rango de precio, disponibilidad, escalación y canal interno |
 | `/playbook` | escribe o cambia el playbook de objeciones y el tono, sin tocar nada más |
@@ -208,7 +209,7 @@ salteo deja el veredicto en `parcial` y no se publica.
 ### Lo que da recién clonado
 
 Un clon no trae `.venv/` ni `requirements.txt`. Los dos están en `.gitignore` porque los
-escribe la fase 10 de la construcción, así que hay **dos momentos** y no dan lo mismo.
+escribe `blueprint/10-entorno.md`, así que hay **dos momentos** y no dan lo mismo.
 
 **Recién clonado, con el Python que ya tengas.** La compuerta corre igual y degrada diciendo
 por qué:
@@ -219,12 +220,16 @@ auditar: PARCIAL · 0 errores · 0 avisos · 14 salteados
   parcial: contrato-control tenía que correr en este árbol y salteó.
 ```
 
-`parcial` acá es lo correcto y no es un problema tuyo: sin `jsonschema` ni `pytest` en ese
-intérprete, cinco chequeos no tienen con qué correr y lo dicen en vez de darse por aprobados.
-No hace falta que corras esto; está para que si lo corrés, sepas qué estás viendo.
+`parcial` acá es lo correcto y no es un problema tuyo: tres chequeos no tienen con qué correr
+en ese intérprete y lo dicen en vez de darse por aprobados —`11 wire-schema` sin pydantic,
+`17 contrato-control` sin jsonschema y `19 pruebas` sin pytest—. Son los tres que se suman a
+los once legítimos, y por eso los salteados son 14. No hace falta que corras esto; está para
+que si lo corrés, sepas qué estás viendo.
 
-**Después de la fase 10**, que es lo primero que hace `/armar-cerrador`. A mano son tres
-comandos —`blueprint/10-entorno.md` los trae para macOS, Linux, WSL, PowerShell y Git Bash—:
+**Después de `blueprint/10-entorno.md`**, que es lo que corren `/start` y `/armar-cerrador` antes
+de construir.
+A mano son tres comandos —`blueprint/10-entorno.md` los trae para macOS, Linux, WSL, PowerShell
+y Git Bash—:
 
 ```bash
 python3 -m venv .venv

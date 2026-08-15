@@ -1098,7 +1098,7 @@ de no volver a perseguirlos es leerlos como lo que son —«todos los que todav�
 mirar, y ninguno más»— y compararlos contra el desglose que imprime la corrida, que dice chequeo por
 chequeo cuál saltea y por qué. El único que no crece nunca es el de esta fase, que es cero.
 
-**Cómo se encuentra el que vuelva a colarse.** No hace falta releer quince archivos: un total de
+**Cómo se encuentra el que vuelva a colarse.** No hace falta releer dieciséis archivos: un total de
 pytest escrito en la prosa se lee siempre igual.
 
 ```bash
@@ -1271,6 +1271,8 @@ de `enviar()` vive; ver el Paso 2.
 - Veredicto `parcial`: algo que tenía que correr no corrió. Con `parcial` no se publica.
 
 Con esto termina la fase 5.
+
+Anotalo en `.wca-estado.json`: `fase` en `pruebas` y el sha256 de cada archivo escrito.
 
 **Próximo archivo:** `blueprint/90-auditoria.md`, la compuerta, que explica los chequeos uno
 por uno. El despliegue viene después de ese `pass`, y no antes.

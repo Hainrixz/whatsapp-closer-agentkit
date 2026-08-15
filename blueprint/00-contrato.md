@@ -1,13 +1,13 @@
 # 00 · El contrato del blueprint
 
-Los quince archivos de `blueprint/` se escribieron en paralelo y quedaron diciendo cosas
+Los dieciséis archivos de `blueprint/` se escribieron en paralelo y quedaron diciendo cosas
 distintas sobre lo mismo. Éste es el desempate: **cuando dos archivos discrepan, gana lo que
 diga acá.** Si el caso no está acá, gana lo que ya funciona en disco, y se anota en
 `PENDIENTES.md`.
 
 Es una referencia, no una fase. No se lee entero para construir: se abre cuando hay una duda de
 nombre, de orden, de ruta o de dueño. Los pasos con los cuatro tiempos —Objetivo, Hacé esto,
-Tenés que ver, Si falla— viven en los otros catorce; acá hay uno solo, al final, que verifica que
+Tenés que ver, Si falla— viven en los otros quince; acá hay uno solo, al final, que verifica que
 este contrato se esté cumpliendo.
 
 ---
@@ -26,11 +26,11 @@ puede citar: el chequeo 01 `blueprint-existe` los marca uno por uno.
 | `34-pasos.md` | `34-crm.md` |
 | `35-agenda-crm.md` | `35-panel-api.md` |
 
-Los quince que sí existen:
+Los dieciséis que sí existen:
 
 ```
-00-mapa.md  00-contrato.md  10-entorno.md  20-entrevista.md  25-playbook.md
-30-generacion.md  31-proveedores.md  32-multimodal.md
+00-mapa.md  00-contrato.md  05-arranque.md  10-entorno.md  20-entrevista.md
+25-playbook.md  30-generacion.md  31-proveedores.md  32-multimodal.md
 33-agenda.md  34-crm.md  35-panel-api.md
 40-pruebas.md  90-auditoria.md  50-despliegue.md  60-bandeja.md
 ```
@@ -46,20 +46,26 @@ siguiente entero, que es lo que pasa hoy entre `30` y `31`.
 | # | Archivo | Fase | Cierra con `**Próximo archivo:**` |
 |---|---|---|---|
 | 1 | `00-mapa.md` | primero | `blueprint/00-contrato.md` |
-| 2 | `00-contrato.md` | primero | `blueprint/10-entorno.md` |
-| 3 | `10-entorno.md` | 1 | `blueprint/20-entrevista.md` |
-| 4 | `20-entrevista.md` | 2 | `blueprint/25-playbook.md` |
-| 5 | `25-playbook.md` | 2 | `blueprint/30-generacion.md` |
-| 6 | `30-generacion.md` | 3 | `blueprint/31-proveedores.md` |
-| 7 | `31-proveedores.md` | 3 | `blueprint/32-multimodal.md` |
-| 8 | `32-multimodal.md` | 3 | `blueprint/33-agenda.md` |
-| 9 | `33-agenda.md` | 4 | `blueprint/34-crm.md` |
-| 10 | `34-crm.md` | 4 | `blueprint/35-panel-api.md` |
-| 11 | `35-panel-api.md` | 4 | `blueprint/40-pruebas.md` |
-| 12 | `40-pruebas.md` | 5 | `blueprint/90-auditoria.md` |
-| 13 | `90-auditoria.md` | compuerta | `blueprint/50-despliegue.md` |
-| 14 | `50-despliegue.md` | 6 | `blueprint/60-bandeja.md` |
-| 15 | `60-bandeja.md` | después | no hay: se abre cada día |
+| 2 | `00-contrato.md` | primero | `blueprint/05-arranque.md` |
+| 3 | `05-arranque.md` | 0 | `blueprint/10-entorno.md` |
+| 4 | `10-entorno.md` | 1 | `blueprint/20-entrevista.md` |
+| 5 | `20-entrevista.md` | 2 | `blueprint/25-playbook.md` |
+| 6 | `25-playbook.md` | 2 | `blueprint/30-generacion.md` |
+| 7 | `30-generacion.md` | 3 | `blueprint/31-proveedores.md` |
+| 8 | `31-proveedores.md` | 3 | `blueprint/32-multimodal.md` |
+| 9 | `32-multimodal.md` | 3 | `blueprint/33-agenda.md` |
+| 10 | `33-agenda.md` | 4 | `blueprint/34-crm.md` |
+| 11 | `34-crm.md` | 4 | `blueprint/35-panel-api.md` |
+| 12 | `35-panel-api.md` | 4 | `blueprint/40-pruebas.md` |
+| 13 | `40-pruebas.md` | 5 | `blueprint/90-auditoria.md` |
+| 14 | `90-auditoria.md` | compuerta | `blueprint/50-despliegue.md` |
+| 15 | `50-despliegue.md` | 6 | `blueprint/60-bandeja.md` |
+| 16 | `60-bandeja.md` | después | no hay: se abre cada día |
+
+La columna «Fase» de esta tabla es el orden, no lo que se escribe en `.wca-estado.json`. Ningún
+archivo anota `0`, `1` ni `compuerta`: anotan una palabra —`arranque`, `entorno`, `crm`—, y la
+traducción de esa palabra al archivo vive en la tabla de `blueprint/00-mapa.md`, columna «`fase`
+en el estado». Retomar cruzando contra esta columna no encuentra nada.
 
 Dos cosas que se leen al revés de la numeración y son correctas:
 
@@ -744,7 +750,7 @@ El tercero, exactamente una línea:
 blueprint/60-bandeja.md:0
 ```
 
-Catorce de los quince declaran su próximo archivo. `60-bandeja.md` es el único que no, porque
+Quince de los dieciséis declaran su próximo archivo. `60-bandeja.md` es el único que no, porque
 cierra la cadena.
 
 **Si falla.**
@@ -767,7 +773,8 @@ cierra la cadena.
 
 | Archivo | Qué cambia |
 |---|---|
-| `blueprint/00-mapa.md` | La tabla pasa de catorce filas a quince y suma `00-contrato.md`. Los seis nombres inventados salen. El «Próximo archivo» del mapa es `00-contrato.md`. El orden de la tabla es el de § 2, con `90` antes de `50`. La fila 4 dice «once de las doce preguntas», que es lo que hace `20-entrevista.md` (§ 4). |
+| `blueprint/00-mapa.md` | La tabla pasa de quince filas a dieciséis y suma `05-arranque.md`, entre `00-contrato.md` y `10-entorno.md`. Los seis nombres inventados salen. El «Próximo archivo» del mapa sigue siendo `00-contrato.md`. El orden de la tabla es el de § 2, con `90` antes de `50`. La fila de `20-entrevista.md` dice «once de las doce preguntas», que es lo que hace ese archivo (§ 4). **Y de esta ronda:** la tabla gana la columna «`fase` en el estado» con el valor literal que cada archivo anota en `.wca-estado.json` —`arranque`, `entorno`, `entrevista`, `tramo-1-listo`, `generacion`, `proveedores`, `multimodal`, `agenda`, `crm`, `panel`, `pruebas`, `despliegue`—, y el paso 1 y el contrato de reanudación cruzan contra ésa y no contra «Fase». Cruzar contra «Fase» no encontraba nunca nada: ningún archivo escribe `1`, `2` ni `compuerta`, así que toda reanudación caía en la rama «lo escribió otra versión del kit». Los cinco que no anotan `fase` —los dos del principio, la compuerta, la bandeja y `25-playbook.md`, que es sub-paso de la fase 2 y se entra dos veces— lo dicen en su celda, con el motivo. |
+| `blueprint/05-arranque.md` | **Nuevo, y es la fase 0.** Es lo que lee `/start`: mide el sistema, el Python del rango de `PINES.md`, el Claude Code del piso que declara `.claude-plugin/plugin.json`, y que el árbol sea un clon de git y no un ZIP. **No instala nada**: sólo mide. Después declara lo que cuesta y lo que tarda, y hace elegir destino —local o Railway— y proveedor —`demo`, `meta` o `zernio`—. Anota `fase` en `arranque` y cierra con `**Próximo archivo:** blueprint/10-entorno.md`. Entra en la cadena entre `00-contrato.md` y `10-entorno.md`, y por eso el «Próximo archivo» de `00-contrato.md` pasó de `10-entorno.md` a éste. |
 | `blueprint/10-entorno.md` | El comando del cierre pasa a `.venv/bin/python scripts/auditar.py` y sigue esperando salteados, no `pass`. Glosario en la primera aparición de: webhook, compuerta, invariante. La línea de cierre dice once preguntas en tres tramos y nombra a Q4 aparte (§ 4). |
 | `blueprint/20-entrevista.md` | Q11 suma `META_APP_SECRET` con su trampa (§ 7). La bajada de medios se recorta a una línea y remite a `32` (§ 6). El comando del paso 13, al venv. Cierra con `**Próximo archivo:** blueprint/25-playbook.md`. |
 | `blueprint/25-playbook.md` | Cierra con `**Próximo archivo:** blueprint/30-generacion.md`, y al lado la excepción de `/playbook`. El «Si falla» del paso 4 deja de decir que por el camino B la copia no existe: el `cp` del paso 1 va en los tres caminos, y lo que ese remedio usa igual es la plantilla y no la copia. |
@@ -793,8 +800,9 @@ cierra la cadena.
 | `.gitignore` | Suma `/config/playbook-base.yaml`, anclado, con el comentario de por qué ese archivo sí y el resto de `config/` no (§ 4). |
 | `plantillas/` | Los siete archivos son verbatim y el `MANIFIESTO.json` los hashea. Se tocan dos: el comentario de cabecera de `plantillas/config/playbook-base.yaml`, que describía un flujo viejo —«el paso 2 lo copia»— y ahora dice lo que dice `25-playbook.md` —copia en el paso 1, en los tres caminos—, y `plantillas/infra/requirements.txt`, que suma las dos líneas de RS256 de `PINES.md`. Toda edición acá, aunque sea un comentario, exige `scripts/hash_plantillas.py --escribir`, o el chequeo 02 falla con `manifiesto/kit_viejo`. |
 
-**Próximo archivo:** `blueprint/10-entorno.md`, que deja el intérprete, las 30 dependencias y la
-clave en su lugar.
+**Próximo archivo:** `blueprint/05-arranque.md`, la fase 0: mide el terreno, dice lo que cuesta y
+lo que tarda, y te hace elegir destino. No instala nada; el intérprete, las 30 dependencias y la
+clave los deja `blueprint/10-entorno.md`, que es a donde manda el 05 al cerrar.
 
 > **El número cambió en esta ronda y está escrito a mano en seis lugares más.** Eran 28 hasta que
 > `PINES.md` sumó `PyJWT` y `cryptography` para destrabar la rama `service_account` del paso 4.

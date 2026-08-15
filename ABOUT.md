@@ -174,13 +174,13 @@ GitHub corta el About en 350 caracteres. Esta tiene **320**, contados con:
 printf '%s' "$(sed -n '/^> /s/^> //p' ABOUT.md | head -1)" | wc -m
 ```
 
-> Repo blueprint para Claude Code: no trae la app, trae las instrucciones para construirla en tu máquina paso a paso. Un agente que atiende cada chat de WhatsApp como setter y closer: califica, responde la objeción, agenda y escribe el CRM. 15 archivos por fase, 30 versiones fijadas, compuerta de 23 chequeos. En español.
+> Repo blueprint para Claude Code: no trae la app, trae las instrucciones para construirla en tu máquina paso a paso. Un agente que atiende cada chat de WhatsApp como setter y closer: califica, responde la objeción, agenda y escribe el CRM. 16 archivos por fase, 30 versiones fijadas, compuerta de 23 chequeos. En español.
 
 El comando que la aplica:
 
 ```bash
 gh repo edit Hainrixz/whatsapp-closer-agentkit \
-  --description "Repo blueprint para Claude Code: no trae la app, trae las instrucciones para construirla en tu máquina paso a paso. Un agente que atiende cada chat de WhatsApp como setter y closer: califica, responde la objeción, agenda y escribe el CRM. 15 archivos por fase, 30 versiones fijadas, compuerta de 23 chequeos. En español."
+  --description "Repo blueprint para Claude Code: no trae la app, trae las instrucciones para construirla en tu máquina paso a paso. Un agente que atiende cada chat de WhatsApp como setter y closer: califica, responde la objeción, agenda y escribe el CRM. 16 archivos por fase, 30 versiones fijadas, compuerta de 23 chequeos. En español."
 ```
 
 ---
@@ -197,7 +197,7 @@ de usar Whisper, ese topic se cae.
 | `whatsapp-cloud-api` | uno de los dos proveedores reales |
 | `meta-cloud-api` | el mismo, con el nombre que usa Meta |
 | `whatsapp-bot` | lo que la gente escribe cuando busca esto |
-| `claude-code` | el blueprint lo ejecuta Claude Code, con diez comandos |
+| `claude-code` | el blueprint lo ejecuta Claude Code, con once comandos |
 | `anthropic` | el modelo que redacta y el que lee las imágenes |
 | `agent` | la forma del producto |
 | `ai-agent` | el término con el que se busca esa forma |

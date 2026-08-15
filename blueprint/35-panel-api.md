@@ -320,7 +320,7 @@ migra ni cómo se cierra la sonda.
 **Tenés que ver.**
 
 ```bash
-curl -s localhost:8000/salud
+curl -s http://localhost:8000/salud
 ```
 
 Con `demo` y un `.env` recién copiado, donde sólo están las dos de `SIEMPRE`:
@@ -442,7 +442,7 @@ error a la vista.
 **Tenés que ver.** Con `WHATSAPP_PROVIDER=meta`:
 
 ```bash
-curl -s "localhost:8000/webhook/meta?hub.mode=subscribe&hub.verify_token=$WHATSAPP_VERIFY_TOKEN&hub.challenge=1158201444"
+curl -s "http://localhost:8000/webhook/meta?hub.mode=subscribe&hub.verify_token=$WHATSAPP_VERIFY_TOKEN&hub.challenge=1158201444"
 ```
 
 ```
@@ -510,9 +510,9 @@ Generá el valor, no lo inventes:
 **Tenés que ver.** Tres pedidos y no dos: sin token, con un token que no es, y con el bueno.
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}\n" localhost:8000/api/leads
-curl -s -o /dev/null -w "%{http_code}\n" -H "Authorization: Bearer no-es-este-el-token-pero-mide-lo-mismo" localhost:8000/api/leads
-curl -s -o /dev/null -w "%{http_code}\n" -H "Authorization: Bearer $PANEL_TOKEN" localhost:8000/api/leads
+curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8000/api/leads
+curl -s -o /dev/null -w "%{http_code}\n" -H "Authorization: Bearer no-es-este-el-token-pero-mide-lo-mismo" http://localhost:8000/api/leads
+curl -s -o /dev/null -w "%{http_code}\n" -H "Authorization: Bearer $PANEL_TOKEN" http://localhost:8000/api/leads
 ```
 
 ```
@@ -592,7 +592,7 @@ Devuelven JSON y nada de HTML. El HTML lo arma el paso 8, y ahí se escapa.
 **Tenés que ver.**
 
 ```bash
-curl -s -H "Authorization: Bearer $PANEL_TOKEN" "localhost:8000/api/leads?limite=1"
+curl -s -H "Authorization: Bearer $PANEL_TOKEN" "http://localhost:8000/api/leads?limite=1"
 ```
 
 ```json
@@ -693,7 +693,7 @@ compuerta numérica de `/soltar` está en `blueprint/60-bandeja.md`.
 **Tenés que ver.**
 
 ```bash
-curl -s -X POST -H "Authorization: Bearer $PANEL_TOKEN" localhost:8000/api/pendientes/1/aprobar
+curl -s -X POST -H "Authorization: Bearer $PANEL_TOKEN" http://localhost:8000/api/pendientes/1/aprobar
 ```
 
 ```json
@@ -923,7 +923,7 @@ vez de mirar lo que vinieron a mirar. El chequeo 14 exige que exista; las prueba
 **Tenés que ver.** Ninguna referencia externa en la página:
 
 ```bash
-curl -s -H "Authorization: Bearer $PANEL_TOKEN" localhost:8000/panel | grep -c "https\?://\|<script src"
+curl -s -H "Authorization: Bearer $PANEL_TOKEN" http://localhost:8000/panel | grep -c "https\?://\|<script src"
 ```
 
 ```
@@ -934,7 +934,7 @@ Y la primera entrada por la query, que es la regla 3 de `blueprint/00-contrato.m
 `/panel` pelado con la cookie ya puesta, y no un `200` con el token en la barra.
 
 ```bash
-curl -s -o /dev/null -D - "localhost:8000/panel?token=$PANEL_TOKEN" | grep -i "^HTTP/\|^location\|^set-cookie"
+curl -s -o /dev/null -D - "http://localhost:8000/panel?token=$PANEL_TOKEN" | grep -i "^HTTP/\|^location\|^set-cookie"
 ```
 
 ```

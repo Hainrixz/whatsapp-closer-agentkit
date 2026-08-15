@@ -42,12 +42,12 @@ Nada queda listo sin `scripts/auditar.py` en verde.
 ## Los comandos
 
 ```
-/armar-cerrador  construye            /probar     simulador de chat
-/seguir          retoma a medias      /revisar    corre la compuerta
-/playbook        estrategia de cierre /bandeja    aprobar borradores
-/conectar        credenciales         /soltar     pasar a automático
-/publicar        desplegar
-/configurar      Q5 a Q9: catálogo, rango de precio, disponibilidad, escalación, canal interno
+/start           de cero a andando    /probar     simulador de chat
+/armar-cerrador  construye            /revisar    corre la compuerta
+/seguir          retoma a medias      /bandeja    aprobar borradores
+/playbook        estrategia de cierre /soltar     pasar a automático
+/conectar        credenciales         /publicar   desplegar
+/configurar      catálogo, rango, disponibilidad, escalación, canal
 ```
 
 Viven en `.claude/skills/`, cada uno apunta a su `blueprint/`.

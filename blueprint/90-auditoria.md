@@ -42,7 +42,7 @@ es 3. O sea: con `python3` este paso no puede dar el `pass` que el paso siguient
 ```
 auditar · whatsapp-closer-agentkit · construido
 
-  [ok      ] 01 blueprint-existe   15 archivo(s) citados por 26, todos con contenido
+  [ok      ] 01 blueprint-existe   16 archivo(s) citados por 28, todos con contenido
   ...
   [ok      ] 21 panel-cerrado      NN router(s) y app(s) leídos, N con `exigir_token` puesto · t
   [ok      ] 22 rutas-del-contrato 10 rutas · 11 métodos, los de la tabla de blueprint/00-contr
@@ -61,9 +61,9 @@ Paso 8.
 
 Son veintitrés líneas numeradas de `01` a `23`, en el orden del `REGISTRO` de `scripts/auditar.py`,
 y la última línea trae la ruta absoluta del `gates.json`, no la relativa. **El `21`, el `22` y el
-`23` están al final y no al lado del 14 a propósito**: los otros catorce archivos del blueprint
-citan los chequeos por número —«el chequeo 13», «el chequeo 02»— y meter uno en el medio los corre a
-todos de lugar. Cada chequeo nuevo entra por el final, siempre.
+`23` están al final y no al lado del 14 a propósito**: los demás archivos del blueprint citan los
+chequeos por número —«el chequeo 13», «el chequeo 02»— y meter uno en el medio los corre a todos de
+lugar. Cada chequeo nuevo entra por el final, siempre.
 
 Cuando hay salteados se cuela un renglón más antes de la evidencia —«un salteado no es un
 aprobado: leé el motivo de cada uno»—, y con `parcial` otro más que los nombra.
@@ -101,7 +101,7 @@ diez que además espera una fase —la 2, que escribe `config/playbook.yaml`—.
 
 - **01 blueprint-existe** — cada `blueprint/NN-*.md` que citan `CLAUDE.md`, un `SKILL.md` u otro
   blueprint existe **y pesa más de cero bytes**. Es el chequeo que faltaba, y va primero por lo que
-  cuesta y por lo que tapa: las diez skills no traen el procedimiento adentro, traen la cita. Sin el
+  cuesta y por lo que tapa: las once skills no traen el procedimiento adentro, traen la cita. Sin el
   archivo citado el comando **no falla**: abre, no encuentra nada y construye de memoria, que es lo
   único que este kit pide no hacer. Los otros veintidós dan verde igual, porque ninguno mira ahí.
   Existir tampoco alcanza: cero bytes es el estado real de un archivo mientras otro proceso lo

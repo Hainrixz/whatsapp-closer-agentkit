@@ -24,16 +24,32 @@ puede no ser el tuyo.
 
 ### Paso 1 · Abrí el estado
 
-**Objetivo.** Existe `.wca-estado.json` y ninguna respuesta anterior se perdió.
+**Objetivo.** Existe `.wca-estado.json` con la clave `respuestas`, y ninguna respuesta anterior se
+perdió.
 
-**Hacé esto.** Si ya existe, no preguntes nada: pasá al procedimiento de `/seguir`. Si no,
-escribilo: `{ "version": 1, "fase": "entrevista", "respuestas": {}, "archivos": {} }`
+**Hacé esto.** Leé el archivo y mirá `fase`. Son tres casos, no dos: que el archivo exista no
+quiere decir que esto sea una reanudación.
 
-**Tenés que ver.** El archivo en la raíz, con esas cuatro claves y `respuestas` vacío.
+1. **No existe.** Escribilo entero:
+   `{ "version": 1, "fase": "entrevista", "respuestas": {}, "archivos": {} }`
+2. **Existe y `fase` dice `arranque` o `entorno`.** Es la primera corrida, y lo dejaron ahí las
+   fases anteriores: `blueprint/05-arranque.md` y `blueprint/10-entorno.md`. No es una
+   reanudación. Agregale `"respuestas": {}` si no está —y `"version": 1` o `"archivos": {}` si
+   tampoco están—, poné `fase` en `entrevista` porque la fase en curso pasa a ser ésta, y seguí
+   con Q1. Todo lo demás queda como está: `arranque` y `entorno` no se pisan.
+3. **Existe y `fase` dice cualquier otra palabra.** Eso sí es una reanudación: no preguntes nada
+   de nuevo, pasá al procedimiento de `/seguir`, reconciliá contra el disco y seguí por la primera
+   pregunta que no esté en `respuestas`.
+
+**Tenés que ver.** En el caso 1, el archivo en la raíz con esas cuatro claves y `respuestas`
+vacío. En el caso 2, `fase` en `entrevista`, `respuestas` vacío y todo lo que anotaron las fases
+anteriores intacto. En el caso 3 no escribiste nada todavía.
 
 **Si falla.** Existe y no es JSON válido: renombralo a `.wca-estado.json.roto`, decilo y arrancá
-de cero, no lo repares adivinando. No tenés permiso de escritura: parás, porque sin ese archivo
-la entrevista no sobrevive a un corte.
+de cero por el caso 1, no lo repares adivinando. `fase` trae una palabra que no está en la columna
+«`fase` en el estado» de `blueprint/00-mapa.md`: decila tal cual y esperá, no la traduzcas por
+parecido. No tenés permiso de escritura: parás, porque sin ese archivo la entrevista no sobrevive
+a un corte.
 
 ### Paso 2 · Q1 y Q2 · Identidad
 
@@ -90,6 +106,12 @@ Si no hay `.env`, copiá `env.example` y dejá `WHATSAPP_PROVIDER=demo`. Marcá
 > Ya tenés la marca y el trato. Falta cómo cerrás, que es lo que separa esto de un bot de menú:
 > son tres caminos y lleva entre un minuto y diez. Sigo con eso, y cuando esté corré `/probar`
 > para hablar con él.
+
+**Si el que corre es `/start`, ese cierre es otro.** Ahí el tramo 1 no desemboca en el playbook:
+desemboca en el tramo 2, Q5 a Q9, y el playbook viene después de Q9. Decí esto en su lugar:
+
+> Ya tenés la marca y el trato. Sigo con los precios, los horarios y a quién te aviso: son cinco
+> preguntas y ninguna te pide abrir una cuenta. Después vamos a cómo cerrás, y ahí lo probás.
 
 **`config/playbook.yaml` no lo escribe este archivo.** Lo escribe `blueprint/25-playbook.md` en su
 paso 7, que es su dueño único, y lo hace después de preguntar Q4 con sus tres caminos. Dejar acá
@@ -300,15 +322,22 @@ Y cerrá el tramo diciendo esto, que es lo que cambió:
 > Corré `/probar` y hablá con él. Cuando tengas a mano las cuentas de WhatsApp, Google, Supabase y
 > Slack, `/conectar` lo enchufa al mundo real.
 
+**Si el que corre es `/start`, ese cierre es otro.** Ahí el tramo 2 vino pegado al 1 y lo que sigue
+es Q4, el playbook de `blueprint/25-playbook.md`. Todavía no mandes a `/probar`: sin una objeción,
+`playbook.objeciones` queda vacío y la entrada rebota por `minItems: 1`. Decí esto en su lugar:
+
+> Listo. Ahora el cerrador dice tus precios y ofrece tus horarios, y escala solo con tus palabras.
+> Falta cómo cerrás, que es la última pregunta. Sigo con eso y después lo probás.
+
 **Tenés que ver.** Los tres YAML en `config/`, y en la salida del comando el veredicto `pass` con
-varios salteados. `16 contrato-control` tiene que decir `[ok]`: es el control negativo, el que
-distingue «validé y está bien» de «no validé nada». `15 contrato` sigue en `salteado` porque
+varios salteados. `17 contrato-control` tiene que decir `[ok]`: es el control negativo, el que
+distingue «validé y está bien» de «no validé nada». `16 contrato` sigue en `salteado` porque
 todavía no hay fixtures de salida en `pruebas/`, y eso es correcto en la fase 2: los escribe
 `blueprint/40-pruebas.md`.
 
 **Si falla.**
 
-- **`16 contrato-control` dice `salteado` por falta de `jsonschema`.** Lo corriste con el Python
+- **`17 contrato-control` dice `salteado` por falta de `jsonschema`.** Lo corriste con el Python
   del sistema. Repetilo con el del venv, que es el de los tres bloques de arriba. Con ese salteo
   el veredicto entero baja a `parcial` y la salida es 3: un salteado no es un aprobado.
 - **El veredicto es `fail` con un hallazgo de `08 secretos`.** Se escribió una credencial en el
@@ -460,16 +489,16 @@ posterior te va a pedir que exportes otro proveedor para pasar.
 
 | Pregunta | Quién la hace | Qué determina | Archivo | Chequeo de `auditar.py` |
 |---|---|---|---|---|
-| Q1 negocio | `/armar-cerrador` | de qué negocio habla | `config/marca.yaml`, `agente/prompt.py` | 14 cache-estatico: en el prefijo, no interpolado de la petición |
-| Q2 nombre del agente | `/armar-cerrador` | con qué firma | `config/marca.yaml`, `agente/prompt.py` | 14 cache-estatico |
-| Q3 tratamiento | `/armar-cerrador` | tú / vos / usted en lo que sale | `config/marca.yaml` → `playbook.tono` | 14 cache-estatico, y 18 pruebas sobre el registro |
-| Q4 objeciones | `blueprint/25-playbook.md` | qué contesta y qué deja al humano | `config/playbook.yaml` | 15 contrato: `respuesta.objecion_detectada` y `objecion_en_playbook` |
-| Q5 catálogo | `/configurar` | los únicos precios que puede decir | `config/negocio.yaml` | 18 pruebas: un precio fuera del catálogo es fallo |
-| Q6 rango | `/configurar` | cuándo escala el paso 6 por monto | `config/negocio.yaml` | 15 contrato: `handoff.motivo` = `precio_fuera_de_rango` |
-| Q7 disponibilidad | `/configurar` | los horarios del paso 3 | `config/agenda.yaml` | 15 contrato: `horarios_ofrecidos`; 18 pruebas: cada uno en `disponibilidad` |
-| Q8 palabras | `/configurar` | el disparador por palabra clave | `config/negocio.yaml` | 15 contrato: `handoff.motivo` = `palabra_clave` |
+| Q1 negocio | `/armar-cerrador` | de qué negocio habla | `config/marca.yaml`, `agente/prompt.py` | 15 cache-estatico: en el prefijo, no interpolado de la petición |
+| Q2 nombre del agente | `/armar-cerrador` | con qué firma | `config/marca.yaml`, `agente/prompt.py` | 15 cache-estatico |
+| Q3 tratamiento | `/armar-cerrador` | tú / vos / usted en lo que sale | `config/marca.yaml` → `playbook.tono` | 15 cache-estatico, y 19 pruebas sobre el registro |
+| Q4 objeciones | `blueprint/25-playbook.md` | qué contesta y qué deja al humano | `config/playbook.yaml` | 16 contrato: `respuesta.objecion_detectada` y `objecion_en_playbook` |
+| Q5 catálogo | `/configurar` | los únicos precios que puede decir | `config/negocio.yaml` | 19 pruebas: un precio fuera del catálogo es fallo |
+| Q6 rango | `/configurar` | cuándo escala el paso 6 por monto | `config/negocio.yaml` | 16 contrato: `handoff.motivo` = `precio_fuera_de_rango` |
+| Q7 disponibilidad | `/configurar` | los horarios del paso 3 | `config/agenda.yaml` | 16 contrato: `horarios_ofrecidos`; 19 pruebas: cada uno en `disponibilidad` |
+| Q8 palabras | `/configurar` | el disparador por palabra clave | `config/negocio.yaml` | 16 contrato: `handoff.motivo` = `palabra_clave` |
 | Q9 canal interno | `/configurar` | dónde sale el aviso del paso 6 | `config/negocio.yaml` y `.env` | 08 secretos: `.env` ignorado y sin rastrear |
-| Q10 proveedor | `/conectar` | qué firma se verifica y por dónde sale | `.env` | 17 firmas: los fixtures crudos reproducen el MAC |
+| Q10 proveedor | `/conectar` | qué firma se verifica y por dónde sale | `.env` | 18 firmas: los fixtures crudos reproducen el MAC |
 | Q11 credenciales | `/conectar` | que el proveedor conecte | `.env`, nada más | 08 secretos: ninguna credencial en el árbol |
 | Q12 Anthropic y el resto | `/conectar` | el modelo, y los pasos 4, 5 y 6 | `.env`, nada más | 10 modelo: el id sale de `PINES.md`, sin los cuatro que dan 400 |
 
@@ -480,4 +509,5 @@ Ninguna respuesta de la entrevista fija una versión. Todas salen de `PINES.md`.
 
 **Próximo archivo:** `blueprint/25-playbook.md`, que hace Q4 y escribe `config/playbook.yaml`. Es
 lo que sigue del tramo 1, en la primera corrida. Los tramos 2 y 3 los abren `/configurar` y
-`/conectar` cualquier otro día, y cuando terminan vuelven a quien los llamó.
+`/conectar` cualquier otro día, y cuando terminan vuelven a quien los llamó. Desde `/start` el
+tramo 2 no espera a otro día: corre pegado al 1, y este archivo se abre recién después de Q9.

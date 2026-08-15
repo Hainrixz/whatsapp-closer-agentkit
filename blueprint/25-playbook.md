@@ -1,7 +1,8 @@
 # 25 · El playbook de cierre
 
 Escribe `config/playbook.yaml`: objeciones con su respuesta, y tono. Es campo obligatorio de la
-entrada. Acá entra `/armar-cerrador` después de Q3, y `/playbook` sola para cambiarlo después.
+entrada. Acá entra `/armar-cerrador` después de Q3, `/start` después de Q9
+—`blueprint/05-arranque.md`—, y `/playbook` sola para cambiarlo después.
 
 También copia `plantillas/config/playbook-base.yaml` a `config/playbook-base.yaml`. **La copia la
 hace el paso 1**, una sola vez y antes de que se elija la letra: existe por A, por B y por C. Es la
@@ -32,11 +33,18 @@ siendo la misma: «¿Me podés hacer un precio mejor?» es `descuento` aunque no
 escribe el paso 7; el paso 9 cuenta las dos claves y mira que cada una apunte a una objeción que
 hable de eso, porque dos anclas puestas de cualquier manera dan la misma cuenta que el piso entero.
 
+**Tres huecos dependen de dónde entrás.** `{producto}` y `{precio}` salen de `config/negocio.yaml`
+(Q5), y `{horario_1}` de `config/agenda.yaml` (Q7). Viniendo de `/start`, Q5 y Q7 ya corrieron: los
+dos archivos están en disco y el paso 8 cierra los tres en esta misma corrida. Viniendo de
+`/armar-cerrador` o de `/playbook` suelto, puede que no estén, y entonces los tres quedan abiertos
+hasta que corras `/configurar`. No lo supongas por el comando: el paso 8 mira si esos dos archivos
+existen, y de eso sale el resultado.
+
 **Por dónde entrás.** No siempre por el paso 1.
 
 | Venís de | Empezá por |
 |---|---|
-| `/armar-cerrador` o `blueprint/20-entrevista.md` | paso 1 |
+| `/armar-cerrador`, `/start` o `blueprint/20-entrevista.md` | paso 1 |
 | `/playbook`, y `config/playbook.yaml` no existe | paso 1 |
 | `/playbook`, y existe con huecos abiertos | **paso 8**, que los llena. Q4 no se vuelve a preguntar |
 | `/playbook`, y existe y cambia una objeción o el tono —las que trajo `/bandeja resumen`, por ejemplo— | paso 7, con la lista entera en pantalla |
@@ -103,13 +111,15 @@ Los huecos entre llaves se llenan con lo que ya está contestado, y los que no, 
 | Hueco | Sale de | Cuándo |
 |---|---|---|
 | `{negocio}` | Q1 | ya está contestado: llenalo |
-| `{producto}` · `{precio}` | Q5 | tramo 2, todavía no |
-| `{horario_1}` | Q7 | tramo 2, todavía no |
+| `{producto}` · `{precio}` | Q5 | acá va como hueco; lo cierra el paso 8 con `config/negocio.yaml` |
+| `{horario_1}` | Q7 | acá va como hueco; lo cierra el paso 8 con `config/agenda.yaml` |
 
-Los tres que faltan van como hueco, en pantalla y en el archivo del paso 7. Decilo en una línea:
-los llena el paso 8, y `/playbook` entra directo ahí cuando termine `/configurar`. **No los
-inventes**: un precio inventado en la objeción del descuento es la promesa que después paga el
-negocio.
+Esos tres van como hueco en pantalla y en el archivo del paso 7, y quién los llena es el paso 8.
+Decí en una línea cuándo, que depende de dónde venís: con Q5 y Q7 ya contestadas —el caso de
+`/start`— los cierra en esta misma corrida, unos pasos más abajo; sin ellas —el caso de
+`/armar-cerrador`— quedan abiertos hasta que corras `/configurar`, y ahí `/playbook` entra directo
+al paso 8. **No los inventes**: un precio inventado en la objeción del descuento es la promesa que
+después paga el negocio.
 
 Cerrá con "¿Va así, o cambiás alguna?" y esperá.
 
@@ -200,7 +210,8 @@ NO SAQUÉ
 **Y completá el piso.** Mirá si entre lo que extrajiste hay una objeción de descuento y una de
 garantía. La que falte sale del base —`config/playbook-base.yaml`, la copia que el paso 1 dejó
 también por este camino—, transpuesta al tratamiento de Q3, con `{negocio}` llenado desde Q1 y los
-otros tres huecos abiertos para el paso 8. Va en un bloque aparte, marcado:
+otros tres como hueco para el paso 8, que los cierra si los YAML de Q5 y Q7 ya están en disco. Va
+en un bloque aparte, marcado:
 
 ```
 AGREGUÉ DEL BASE
@@ -245,8 +256,8 @@ el historial. De ahí sale el tono. De C5 salen los tres factores del paso 2; de
 **Y completá el piso, que las seis preguntas no cubren.** Ninguna pregunta por descuento ni por
 garantía, y son dos objeciones que salen caras si el agente improvisa. Terminada C6, hacé lo mismo
 que el camino B: leé `config/playbook-base.yaml` —la copia que el paso 1 dejó por este camino—,
-transponé esas dos al tratamiento de Q3, llená `{negocio}` desde Q1 y dejá los otros tres huecos
-para el paso 8. Mostralas en un bloque `AGREGUÉ DEL BASE` con el por qué en una línea, y pedí el
+transponé esas dos al tratamiento de Q3, llená `{negocio}` desde Q1 y dejá los otros tres como
+hueco para el paso 8, que los cierra si los YAML de Q5 y Q7 ya están en disco. Mostralas en un bloque `AGREGUÉ DEL BASE` con el por qué en una línea, y pedí el
 "va" por esas dos aparte. Si en C1 o en C3 ya te dijo cómo contesta el descuento, esa queda como la
 dictó y se lo decís: esa misma es la que va en `piso.descuento`, y del base no entra otra.
 
@@ -273,8 +284,9 @@ archivo—.
 
 **Camino A.** El contenido ya lo tenés: las **ocho** objeciones de `config/playbook-base.yaml` con
 el tratamiento de Q3 y los huecos que llenaste en el paso 2, más el bloque `rubrica` de ese mismo
-archivo, con los cambios que haya pedido y ninguno más. Los huecos de Q5 y Q7 que todavía no tienen
-respuesta van como hueco: los llena el paso 8. El `piso:` sale de la séptima y la octava, ya
+archivo, con los cambios que haya pedido y ninguno más. Los huecos de Q5 y Q7 van como hueco acá,
+tengan respuesta o no: los cierra el paso 8, en esta misma corrida si esos dos YAML ya están en
+disco. El `piso:` sale de la séptima y la octava, ya
 transpuestas al tratamiento de Q3: se copian de ahí, no del base.
 
 **Caminos B y C.** Sale de lo que extrajiste o de lo que dictó, más las dos del piso que aprobó en
@@ -508,8 +520,17 @@ está a la vista para poder ampliarla. «caro» no está ahí a propósito, porq
 las ocho del base.
 
 **Tenés que ver.** Una línea con las tres cuentas, y una línea más por cada clave del piso que no
-quedó anclada. Por el camino A, recién salido del tramo 1, son las ocho del base, el piso entero y
-los tres huecos que el paso 8 todavía no puede llenar: una línea y nada debajo.
+quedó anclada. Por el camino A son las ocho del base y el piso entero, con nada debajo. Lo que
+cambia según de dónde venís es el final de la línea, y son dos salidas.
+
+Viniendo de `/start`, Q5 y Q7 ya están contestadas y el paso 8 cerró los tres:
+
+```
+playbook: valida · 8 objeciones · piso: 2 de 2 · huecos: ninguno
+```
+
+Viniendo de `/armar-cerrador`, `config/negocio.yaml` y `config/agenda.yaml` todavía no existen y los
+tres quedan abiertos hasta `/configurar`:
 
 ```
 playbook: valida · 8 objeciones · piso: 2 de 2 · huecos: {horario_1}, {precio}, {producto}
@@ -603,6 +624,7 @@ La excepción: si llegaste acá por `/playbook` —y no construyendo de cero— 
 lo que estabas haciendo. La cadena de fases sigue en `30-generacion.md` sólo cuando venís de
 `/armar-cerrador`.
 
-Y si quedaron huecos abiertos —Q5 y Q7 son del tramo 2, así que en la primera corrida quedan
-siempre— cerrá diciendo cuáles y con qué se cierran: `/configurar` primero, `/playbook` después,
-que entra directo en el paso 8 y no vuelve a preguntar nada de esto.
+Y si quedaron huecos abiertos —pasa cuando Q5 y Q7 todavía no corrieron, que es el caso de
+`/armar-cerrador`— cerrá diciendo cuáles y con qué se cierran: `/configurar` primero, `/playbook`
+después, que entra directo en el paso 8 y no vuelve a preguntar nada de esto. Viniendo de `/start`
+no queda ninguno: Q5 y Q7 ya están contestadas y el paso 8 los cerró.

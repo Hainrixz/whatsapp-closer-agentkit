@@ -15,7 +15,7 @@ La lista completa —ruta, hash, destino y placeholders permitidos de cada una�
 
 | Plantilla | Va a | Qué sostiene |
 |---|---|---|
-| `infra/requirements.txt` | `requirements.txt` | Los 28 pines de `PINES.md`, todos con `==` |
+| `infra/requirements.txt` | `requirements.txt` | Los 30 pines de `PINES.md`, todos con `==` |
 | `infra/Dockerfile` | `Dockerfile` | `python:3.12-slim` fijada y el `CMD` en forma shell |
 | `infra/railway.json` | `railway.json` | Builder, healthcheck y política de reinicio |
 

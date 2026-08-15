@@ -477,7 +477,9 @@ El audio transcrito o el ciclo detenido con el motivo. La imagen leída por el m
 estaba. Los cuerpos de los pasos 1, 2, 3 y 6, los cuatro importando en limpio. Y `avisar_interno()`
 al final de `agente/enviar.py`, con sus dos formas separadas —Slack por webhook, en los dos modos;
 el número interno por `enviar()`, con plantilla y sólo con confirmación— y el chequeo 13 todavía en
-verde. Anotá en `.wca-estado.json` el sha256 de cada archivo escrito.
+verde.
+
+Anotalo en `.wca-estado.json`: `fase` en `multimodal` y el sha256 de cada archivo escrito.
 
 **Próximo archivo:** `blueprint/33-agenda.md`, que crea la cita y deja el recordatorio programado
 —o declarado detenido, según tu base.

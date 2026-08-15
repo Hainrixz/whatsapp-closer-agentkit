@@ -6,9 +6,13 @@ disable-model-invocation: true
 
 # Conectar
 
-Leé `blueprint/31-proveedores.md` y seguí la sección del proveedor que corresponda: `meta`,
-`zernio` o `demo`. Cada uno tiene su firma, sus rutas y sus variables. No mezcles las de uno
-con las del otro.
+Leé `blueprint/20-entrevista.md`, **tramo 3 · Q10 a Q12 · desde `/conectar`**, y seguilo. Ahí
+están las tres preguntas —el proveedor, sus credenciales y qué más conectar— y el paso 13, que
+cierra anotando en `.wca-estado.json` qué variables quedaron puestas y cuáles no.
+
+El detalle de cada proveedor —la firma, las rutas y sus variables— está en
+`blueprint/31-proveedores.md`: abrí la sección de `meta`, `zernio` o `demo` cuando el tramo 3 te
+mande ahí. No mezcles las variables de uno con las del otro.
 
 `demo` no pide credenciales. No es un transporte falso: reproduce entregas grabadas, los mismos
 bytes crudos y la misma cabecera de firma. Sirve para probar el camino entero antes de conectar.

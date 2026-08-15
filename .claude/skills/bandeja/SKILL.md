@@ -1,6 +1,6 @@
 ---
 name: bandeja
-description: Abre la bandeja de borradores: mostrás de a uno con su razonamiento y decidís si sale, se corrige o se salta.
+description: Abre la bandeja de borradores — mostrás de a uno con su razonamiento y decidís si sale, se corrige o se salta.
 disable-model-invocation: true
 ---
 

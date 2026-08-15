@@ -822,8 +822,8 @@ otros lados y ninguna es mía:
   veces— y dos mensajes de `scripts/auditar.py`. La compuerta no lo compara contra nada, así que no
   se pone rojo solo.
 
-Anotalo en `.wca-estado.json` y corré la compuerta con el intérprete del proyecto
-(`blueprint/00-contrato.md` § 5):
+Anotalo en `.wca-estado.json`: `fase` en `agenda` y el sha256 de cada archivo escrito. Después
+corré la compuerta con el intérprete del proyecto (`blueprint/00-contrato.md` § 5):
 
 ```bash
 .venv/bin/python scripts/auditar.py

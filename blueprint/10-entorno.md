@@ -20,7 +20,7 @@ están en `blueprint/00-contrato.md` § 10, junto con el resto del glosario:
   `pass`.
 
 **Invariante 6, que se repite acá porque acá se instalan versiones: todas salen de `PINES.md` y
-de ningún otro lado.** El rango de Python, las 28 dependencias y el modelo. Si estás por escribir
+de ningún otro lado.** El rango de Python, las 30 dependencias y el modelo. Si estás por escribir
 un número de versión, primero leelo de ahí.
 
 **Invariante 4, que también vive acá: ninguna credencial en el árbol.** El valor lo escribe quien
@@ -173,7 +173,7 @@ El tuyo va a ser otro. Lo que se mira es el primer número: tiene que ser 2 o m�
 
 Por qué importa, en concreto. El kit se apoya en cuatro cosas que en una versión vieja no existen:
 las skills de proyecto en `.claude/skills/<nombre>/SKILL.md`, el `disable-model-invocation: true`
-que llevan los diez comandos para que los dispare quien instala y no el modelo, el `allowed-tools`
+que llevan los once comandos para que los dispare quien instala y no el modelo, el `allowed-tools`
 del frontmatter, y el bloque `` ```! `` que inyecta la salida de un comando en el cuerpo de la
 skill junto con `${CLAUDE_PROJECT_DIR}`. Los cuatro los usa `/revisar`. En una versión vieja nada
 de eso tira un error: la skill se lee como texto plano y la compuerta no corre. O sea, la
@@ -269,7 +269,7 @@ precios, y un precio que no esté en ese material no existe para el agente. El d
 
 ### Paso 5 · Entorno virtual y dependencias
 
-**Objetivo.** Existe `.venv` con las 28 dependencias de `PINES.md`, cada una en su versión exacta.
+**Objetivo.** Existe `.venv` con las 30 dependencias de `PINES.md`, cada una en su versión exacta.
 
 **Hacé esto.** Cuatro comandos, en este orden.
 
@@ -394,7 +394,7 @@ y el async muere en runtime. Los dos se miran acá porque acá todavía es barat
 - **`SSLCertVerificationError: unable to get local issuer certificate`.** Hay un proxy que abre el
   TLS en el medio y firma con un certificado de la empresa. Se arregla con el certificado, no
   apagando la verificación: `--cert /ruta/ca-de-la-empresa.pem`, o la variable `PIP_CERT`. Existe
-  `--trusted-host pypi.org` y hace que ande; también hace que bajes 28 dependencias por una conexión
+  `--trusted-host pypi.org` y hace que ande; también hace que bajes 30 dependencias por una conexión
   que no podés verificar. Decí las dos cosas y dejá que elija quien instala.
 - **Claude Code te pide permiso para el comando de pip.** Es esperable, no es un fallo. El allowlist
   de `.claude/settings.json` cubre `python3 -m pip install -r requirements.txt`, y este comando
@@ -517,14 +517,15 @@ Seis cosas, y ninguna de memoria:
 2. Un Python del rango `>=3.11,<3.15` de `PINES.md`, con su ruta completa anotada.
 3. Claude Code 2.0.0 o más nuevo, el piso que declara `.claude-plugin/plugin.json`.
 4. `knowledge/closer/` y `knowledge/negocio/` creadas, y git ignorando lo que caiga adentro.
-5. `.venv` con las 28 dependencias fijadas, verificadas contra `PINES.md` una por una.
+5. `.venv` con las 30 dependencias fijadas, verificadas contra `PINES.md` una por una.
 6. `.env` creado, ignorado por git, con la clave de Anthropic cargada y sin haber pasado por una
    tool call.
 
 Anotalo en `.wca-estado.json` antes de seguir, como pide el contrato de reanudación de
 `blueprint/00-mapa.md`: `fase` en `entorno`, y una clave `entorno` con el sistema, la ruta del
-intérprete, su versión y la versión de Claude Code. **Ningún valor de credencial va ahí**: va el
-nombre de la variable y si está puesta.
+intérprete, su versión y la versión de Claude Code. Esto suma, no pisa: la clave `arranque` que
+dejó la fase 0 queda como está. **Ningún valor de credencial va ahí**: va el nombre de la variable
+y si está puesta.
 
 Opcional, y sale barato: corré la compuerta ahora. Con el Python del venv, que es la única forma
 que este kit escribe —el del sistema no trae `jsonschema`, y con eso la compuerta no puede pasar de
