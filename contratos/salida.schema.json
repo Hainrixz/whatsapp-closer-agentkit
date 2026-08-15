@@ -17,7 +17,14 @@
       "additionalProperties": false,
       "required": ["numero"],
       "properties": {
-        "numero": { "type": "string" },
+        "numero": {
+          "type": "string",
+          "description": "El teléfono en formato internacional. Cuando el contacto escribe con nombre de usuario de WhatsApp y no expone el número, acá va `bsuid:<id>` en vez de un vacío o un número inventado. El prefijo es a propósito: lo que intente marcarlo falla fuerte en vez de marcar mal."
+        },
+        "id": {
+          "type": ["string", "null"],
+          "description": "El `businessScopedUserId`. Es el ancla de identidad y por acá se indexa todo lo guardado: el número puede faltar, esto no."
+        },
         "nuevo": { "type": "boolean" },
         "mensajes_previos": { "type": "integer", "minimum": 0 }
       }
@@ -31,7 +38,7 @@
           "type": "integer",
           "minimum": 0,
           "maximum": 100,
-          "description": "TODO(humano) S03: la escala de 0 a 100 y los cortes los puso la forja. Ver SUPUESTOS.md"
+          "description": "0 a 100. Los cortes salen de `umbrales` en la entrada. Ver S03 en SUPUESTOS.md"
         },
         "temperatura": { "enum": ["caliente", "tibio", "frio"] },
         "intencion": { "type": ["string", "null"] },
@@ -60,14 +67,19 @@
         },
         "horarios_ofrecidos": {
           "type": "array",
-          "items": { "type": "string", "format": "date-time" }
+          "items": { "type": "string", "format": "date-time" },
+          "description": "Salen de `disponibilidad` y de ningún otro lado. Uno que no esté en esa lista es fallo, aunque el mensaje esté perfecto."
+        },
+        "ventana_abierta": {
+          "type": ["boolean", "null"],
+          "description": "Si el contacto escribió dentro de las últimas 24 horas. En falso, WhatsApp solo deja mandar plantillas aprobadas y el envío libre no sale. Lo decide la plataforma, no el agente. Sale del `Resultado` de `enviar()` y no se pone a mano: nulo cuando el paso 3 no llegó a llamarlo, que es lo que pasa en un turno en borrador con `enviado` en falso."
         }
       }
     },
     "cita": {
       "type": ["object", "null"],
       "additionalProperties": false,
-      "description": "Nulo mientras el paso 4 no haya creado el evento con confirmación explícita.",
+      "description": "Nulo mientras el paso 4 no haya creado el evento. Para crearlo hacen falta dos cosas, no una: la confirmación explícita y un `mensaje.horario_elegido` que esté en `disponibilidad`. Falta cualquiera de las dos y esto es nulo, con el motivo en el paso 4. Hay `cita` si y sólo si el calendario devolvió el evento: el `evento_id` es el que trajo esa respuesta y nunca uno que el código se escriba a sí mismo.",
       "properties": {
         "evento_id": { "type": "string" },
         "inicio": { "type": "string", "format": "date-time" },
@@ -75,14 +87,14 @@
         "confirmacion_enviada": { "type": "boolean" },
         "recordatorio_programado": {
           "type": "boolean",
-          "description": "TODO(humano) S05: 24 horas antes, y sale por WhatsApp y no por invitación de calendario. Ver SUPUESTOS.md"
+          "description": "24 horas antes, y sale por WhatsApp: una cuenta de servicio no puede invitar a nadie sin delegación de dominio, así que no hay invitación de calendario. Casi siempre cae fuera de la ventana de 24 horas, o sea que necesita una plantilla aprobada. Ver S05 en SUPUESTOS.md"
         }
       }
     },
     "crm": {
       "type": ["object", "null"],
       "additionalProperties": false,
-      "description": "TODO(humano) S06: la ficha dice «el CRM» sin nombrarlo. El default es una tabla `leads` en Supabase. Ver SUPUESTOS.md",
+      "description": "El default es una tabla `leads` en Supabase con estas columnas. Se reapunta a otra base cambiando dos variables. Nulo quiere decir «el paso 5 no corrió», y nada más: en un turno sin confirmar la fila viene armada acá con `escrito` en falso, para que se pueda ver y aprobar desde la bandeja. Ver S06 en SUPUESTOS.md y `blueprint/00-contrato.md` § 13",
       "properties": {
         "etapa": { "enum": ["nuevo", "calificado", "agendado", "cerrado", "perdido", "escalado"] },
         "resumen": {
@@ -106,7 +118,7 @@
         },
         "avisado_en": {
           "type": ["string", "null"],
-          "description": "TODO(humano) S09: el aviso sale por un webhook entrante de Slack. Ver SUPUESTOS.md"
+          "description": "Cuándo salió el aviso interno. Nulo si no hay canal configurado: la escalación ocurre igual, lo que se pierde es el aviso. Ver S09 en SUPUESTOS.md"
         }
       }
     },

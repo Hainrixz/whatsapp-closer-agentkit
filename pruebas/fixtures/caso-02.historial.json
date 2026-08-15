@@ -1,0 +1,53 @@
+{
+  "version": "1",
+  "caso": "caso-02",
+  "contacto": {
+    "contacto_id": "bsu_02HZK3M9QX7T2VW4",
+    "numero": "5215500000001",
+    "nuevo": false
+  },
+  "conversacion": {
+    "conversacion_id": "conv_02HZK3M9QX7T2VW4",
+    "contacto_id": "bsu_02HZK3M9QX7T2VW4",
+    "last_inbound_at": "2026-03-01T22:14:00-06:00",
+    "window_expires_at": "2026-03-02T22:14:00-06:00",
+    "ultimo_entrante": "Ya van dos veces que pregunto lo mismo y nadie contesta, son unos ladrones.",
+    "ultimo_saliente_hash": "9e7d520d4b35c2e84a2841571fecb770fa5826e38b0c3d6a2c709952c321561f",
+    "salientes_seguidos": 0,
+    "baja_en": null
+  },
+  "mensajes": [
+    {
+      "evento_id": "evt_02A1",
+      "direccion": "entrante",
+      "tipo": "texto",
+      "texto": "Hola, vi el curso de bienes raíces. ¿Cuánto sale?",
+      "recibido_en": "2026-03-01T19:40:00-06:00"
+    },
+    {
+      "evento_id": "evt_02A2",
+      "direccion": "saliente",
+      "tipo": "texto",
+      "texto": "El curso sale 12000 MXN y se puede en tres partes. ¿Te va alguno de estos horarios?",
+      "recibido_en": "2026-03-01T19:52:00-06:00"
+    },
+    {
+      "evento_id": "evt_02A3",
+      "direccion": "entrante",
+      "tipo": "texto",
+      "texto": "Ya van dos veces que pregunto lo mismo y nadie contesta, son unos ladrones.",
+      "recibido_en": "2026-03-01T22:14:00-06:00"
+    }
+  ],
+  "lead": {
+    "contacto_id": "bsu_02HZK3M9QX7T2VW4",
+    "numero": "5215500000001",
+    "etapa": "calificado",
+    "score": 58,
+    "temperatura": "tibio",
+    "resumen": "Preguntó el precio del curso de bienes raíces.\nSe le pasó el precio del catálogo y tres horarios.\nFalta que elija uno; viene molesto por la demora.",
+    "proximo_paso": "Responder la objeción y ofrecer horario",
+    "proximo_paso_fecha": "2026-03-02",
+    "cita_evento_id": null
+  }
+}

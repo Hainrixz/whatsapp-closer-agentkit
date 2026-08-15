@@ -1,0 +1,94 @@
+# La compuerta, corrida por GitHub en cada push y en cada pull request.
+#
+# El README promete `PASS · 0 errores` y `50 passed` recién clonado. Esto es lo que
+# hace que esa promesa se vuelva a medir sola cada vez que alguien toca el kit, en una
+# máquina que no es la tuya y con un árbol que es exactamente el que entrega un clon.
+#
+# Ningún número de versión está escrito acá adentro, a propósito. La de Python sale de
+# `PINES.md` y las de los paquetes salen de `plantillas/infra/requirements.txt`, que la
+# fase 10 del blueprint copia verbatim y el chequeo 02 verifica contra su sha256. Un
+# número repetido en dos archivos algún día dice dos cosas distintas.
+
+name: compuerta
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  compuerta:
+    name: 23 chequeos y la suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Clonar
+        uses: actions/checkout@v7
+
+      # Los chequeos 08 `secretos` y 09 `gitignore-anclado` corren `git ls-files` y
+      # `git check-ignore` sobre el árbol. Sin repo de git los dos saltean, y un
+      # salteado deja el veredicto en `parcial`.
+      - name: Comprobar que esto es un repo de git
+        run: git rev-parse --is-inside-work-tree
+
+      - name: La versión de Python sale de PINES.md
+        id: python
+        run: |
+          set -euo pipefail
+          version=$(grep -oE 'python:[0-9]+\.[0-9]+-slim' PINES.md | head -1 \
+                    | sed 's|python:||; s|-slim||')
+          if [ -z "$version" ]; then
+            echo "::error file=PINES.md::no encontré la imagen base \`python:X.Y-slim\`."
+            echo "Es de donde sale la versión que corre acá. Ver PINES.md → Python."
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "PINES.md fija la imagen python:${version}-slim, así que acá corre ${version}."
+
+      - name: Instalar Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ steps.python.outputs.version }}
+
+      # Es el paso 2 de `blueprint/10-entorno.md`, el mismo `cp`. En el runner no hace
+      # falta un `.venv`: el intérprete ya está aislado. `requirements.txt` está en
+      # `.gitignore` con ruta anclada, así que copiarlo no ensucia el árbol.
+      - name: Fase 10 · copiar el requirements verbatim
+        run: cp plantillas/infra/requirements.txt requirements.txt
+
+      - name: Instalar las dependencias fijadas
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Comprobar que el árbol quedó limpio
+        run: |
+          sucio=$(git status --porcelain)
+          if [ -n "$sucio" ]; then
+            echo "::error::la instalación dejó archivos sin rastrear o modificados:"
+            echo "$sucio"
+            echo "Lo que entrega un clon tiene que ser el árbol que la compuerta audita."
+            exit 1
+          fi
+
+      - name: La compuerta
+        run: python scripts/auditar.py
+
+      - name: La suite
+        run: python -m pytest pruebas -q
+
+      # El reporte lleva la hora adentro y `EVIDENCIA/` está en `.gitignore`: no se
+      # versiona, pero sí sirve para leer qué pasó cuando esto sale rojo.
+      - name: Guardar la evidencia
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: evidencia-${{ github.sha }}
+          path: EVIDENCIA/
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,0 +1,26 @@
+{
+    "event":"message.received",
+  "eventId": "evt_01JQ8Z3K7Y2M4N6P8R0T2V4X6A",
+      "accountId" : "acc_01HZK3M9QX7T2VW4",
+
+  "createdAt": "2026-03-02T09:41:00.000Z",
+  "data": {
+        "conversationId": "conv_01HZK3M9QX7T2VW4Y6B8D0F2H4",
+    "message": {
+      "id": "msg_01HZK3MB2N4Q6S8U0W2Y4A6C8E",
+        "direction": "inbound",
+      "type": "text",
+      "text": "Hola, ¿todavía tienen lugar para marzo? Me quedé con la duda: está caro.",
+      "mediaId": null,
+      "mediaUrl": null,   
+      "receivedAt": "2026-03-02T09:41:00.000Z"
+    },
+	"contact": {
+      "businessScopedUserId": "bsu_01HZK3M9QX7T2VW4",
+      "phoneNumber": null,
+        "displayName": "Mar\u00eda Fern\u00e1ndez"
+    },
+    "windowExpiresAt": "2026-03-03T09:41:00.000Z"
+  },
+  "deliveryAttempt": 1
+}

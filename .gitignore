@@ -1,0 +1,163 @@
+# ─────────────────────────────────────────────────────────────
+# Secretos. Nunca, por ninguna razón.
+# ─────────────────────────────────────────────────────────────
+.env
+.env.*
+*.pem
+*-service-account*.json
+
+# `env.example` (sin punto) es el que se versiona, y ningún patrón de arriba
+# lo toca. Acá había un `!.env.example` que no desexcluía nada —el archivo se
+# llama distinto— y sugería una protección que no existía.
+
+
+# ─────────────────────────────────────────────────────────────
+# Lo que escribe la construcción.
+#
+# Todos los patrones van anclados con `/` al principio, a propósito.
+# Un patrón suelto como `seguridad/` no matchea una carpeta: matchea
+# ESA carpeta a cualquier profundidad, y se llevaría puesto
+# `plantillas/seguridad/` — o sea, el kit se publicaría sin el núcleo
+# verbatim y nadie se enteraría hasta que alguien clone.
+# `scripts/auditar.py` verifica que esto siga siendo cierto.
+# ─────────────────────────────────────────────────────────────
+/agente/
+/panel/
+/requirements.txt
+/Dockerfile
+/docker-compose.yml
+/railway.json
+/Procfile
+/alembic/
+/alembic.ini
+
+
+# ─────────────────────────────────────────────────────────────
+# Lo que SÍ se versiona, y por qué.
+#
+# `config/` NO está acá arriba. Es lo único que escribís vos: tu
+# playbook, tu catálogo con precios reales, tus umbrales. Si lo
+# ignoráramos, la parte más valiosa de tu trabajo viviría en una
+# carpeta sin historial y sin vuelta atrás. Se versiona.
+#
+# La excepción es un archivo, y es el único que no escribís vos:
+# `config/playbook-base.yaml`. Lo deja ahí el paso 1 de
+# `blueprint/25-playbook.md` con un `cp`, es byte a byte igual a
+# `plantillas/config/playbook-base.yaml` —que ya está versionada— y la
+# fase 3 compara una contra la otra con
+# `scripts/hash_plantillas.py --verificar --proyecto .`. Versionadas
+# las dos, el repo guarda dos veces el mismo contenido, y un diff en la
+# copia se lee como un cambio tuyo cuando lo que se movió fue el kit.
+# Va con la ruta entera y anclada: `playbook-base.yaml` a secas se
+# llevaría también el original de `plantillas/`, que es núcleo
+# verbatim, y ahí el chequeo 09 `gitignore-anclado` de
+# `scripts/auditar.py` da error.
+#
+# El resto de `config/` no entra: `marca.yaml`, `negocio.yaml`,
+# `agenda.yaml`, `playbook.yaml` y `cerrador.yaml` los escribís vos y
+# se versionan.
+#
+# `knowledge/` sí se ignora, y no es lo mismo. Ahí caen los
+# documentos crudos que subís —el PDF del curso de ventas que
+# compraste, la transcripción de una llamada, tu lista de precios—
+# y dos cosas lo desaconsejan: puede tener datos de clientes, y
+# puede ser material de otro autor. De ahí sale `config/playbook.yaml`,
+# que es tuyo y ese sí viaja.
+# ─────────────────────────────────────────────────────────────
+/config/playbook-base.yaml
+
+# Las subcarpetas se desexcluyen antes que su contenido, a
+# propósito. Git no vuelve a incluir un archivo si la carpeta que
+# lo contiene quedó excluida: con `/knowledge/*` a secas, un
+# `!/knowledge/closer/.gitkeep` no se aplica nunca y el que clona
+# recibe el árbol sin las dos subcarpetas.
+/knowledge/*
+!/knowledge/.gitkeep
+!/knowledge/README.md
+!/knowledge/closer/
+/knowledge/closer/*
+!/knowledge/closer/.gitkeep
+!/knowledge/negocio/
+/knowledge/negocio/*
+!/knowledge/negocio/.gitkeep
+
+
+# ─────────────────────────────────────────────────────────────
+# El reporte de la compuerta.
+#
+# `scripts/auditar.py` lo reescribe entero en cada corrida y lleva
+# la hora adentro. Versionarlo llenaría el diff de ruido y, peor,
+# dejaría un verde viejo en la historia que se lee como si fuera
+# el de ahora. La compuerta se vuelve a correr, no se consulta.
+# ─────────────────────────────────────────────────────────────
+/EVIDENCIA/
+
+
+# ─────────────────────────────────────────────────────────────
+# Lo que escribe la suite.
+#
+# `pruebas/salida-caso-01.json` lo deja el fixture `salida_caso_01` de
+# `pruebas/conftest.py` en cada corrida, y de ahí lo levanta el chequeo
+# 16 `contrato`. Es la salida del caso recién corrida contra el build
+# que tengas en el disco, no un archivo del kit: se reescribe entera
+# cada vez y no significa nada en el historial.
+#
+# Sin esta línea, cada `/probar` deja un archivo sin rastrear y el
+# `/publicar` que sigue queda en rojo por un artefacto de la propia
+# suite: la condición de esa skill es que
+# `git ls-files --others --exclude-standard` dé cero, o sea que lo que
+# entrega un `git clone` sea el árbol que la compuerta auditó.
+#
+# Va con la ruta entera y anclada, y no como `pruebas/` ni como
+# `*.json`: al lado vive `pruebas/fixtures/`, que es núcleo verbatim
+# —las entradas, los `.raw` de firma y la salida esperada—, y
+# cualquiera de esas dos formas se la lleva puesta. Ahí el chequeo 09
+# `gitignore-anclado` da error, que es lo correcto: el que clona
+# recibiría el kit sin los fixtures.
+# ─────────────────────────────────────────────────────────────
+/pruebas/salida-caso-01.json
+
+
+# ─────────────────────────────────────────────────────────────
+# Estado de la construcción.
+#
+# Guarda tus respuestas de la entrevista y el hash de cada archivo
+# que el kit escribió, para que una segunda corrida no te pise algo
+# que tocaste vos. Es estado de máquina y lleva el nombre de tu
+# negocio adentro: se queda local.
+# ─────────────────────────────────────────────────────────────
+# Audios e imágenes que mandan tus clientes. `agente/medios.py` los baja acá,
+# fuera de `/agente/`, así que sin esta línea se versionarían: son datos de
+# terceros y no tienen por qué estar en tu historial de git.
+/medios/
+
+/.wca-estado.json
+
+
+# ─────────────────────────────────────────────────────────────
+# Python
+# ─────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.db
+*.sqlite
+*.sqlite3
+
+
+# ─────────────────────────────────────────────────────────────
+# Sistema y editores
+# ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Ajustes personales de Claude Code. Los del proyecto van en
+# `.claude/settings.json`, que sí se versiona.
+.claude/settings.local.json

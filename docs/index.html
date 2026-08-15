@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cerrador de WhatsApp · blueprint</title>
+<meta name="description" content="Repo blueprint: no trae la aplicación, trae las instrucciones para que Claude Code construya un agente cerrador de ventas de WhatsApp en tu máquina, con las versiones fijadas y una compuerta de 23 chequeos.">
+<meta name="color-scheme" content="light dark">
+<style>
+  /* ─────────────────────────────────────────────────────────────
+     Todo el CSS de esta página está acá adentro. Cero pedidos a la
+     red: sin CDN, sin fuentes web, sin imágenes remotas. El kit
+     existe porque una dependencia que baja de la red a veces no
+     baja; la página que lo cuenta no puede depender de una.
+     ───────────────────────────────────────────────────────────── */
+
+  /* ── paleta ─────────────────────────────────────────────────── */
+  :root{
+    --c-bg:#f2eee3;
+    --c-surface:#fbf8f1;
+    --c-ink:#191713;
+    --c-muted:#6d675b;
+    --c-rule:#d6cfbe;
+    --c-ok:#2c6a4a;
+    --c-warn:#8f6416;
+    --c-bad:#8a382b;
+    --grano:.055;
+
+    --f-libro:'Iowan Old Style','Palatino Linotype',Palatino,'Book Antiqua',Georgia,serif;
+    --f-maq:ui-monospace,SFMono-Regular,'SF Mono','JetBrains Mono',Menlo,Consolas,monospace;
+    --medida:46rem;
+    --ancho:64rem;
+    --margen:1.25rem;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --c-bg:#100f0d;
+      --c-surface:#181613;
+      --c-ink:#e9e3d5;
+      --c-muted:#948d7e;
+      --c-rule:#2d2a24;
+      --c-ok:#74c194;
+      --c-warn:#d3a659;
+      --c-bad:#d2796a;
+      --grano:.09;
+    }
+  }
+
+  /* ── piso ───────────────────────────────────────────────────── */
+  *,*::before,*::after{ box-sizing:border-box; }
+  body,h1,h2,h3,p,ul,ol,li,dl,dt,dd,blockquote,pre,figure,table{ margin:0; padding:0; }
+  ul{ list-style:none; }
+  table{ border-collapse:collapse; }
+
+  html{ -webkit-text-size-adjust:100%; }
+  body{
+    background-color:var(--c-bg);
+    color:var(--c-ink);
+    font-family:var(--f-libro);
+    font-size:17px;
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* Grano y retícula de fondo. Todo inline, sin pedirle un byte a nadie. */
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    opacity:var(--grano);
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='140' height='140' filter='url(%23g)'/></svg>");
+  }
+  body::after{
+    content:"";
+    position:fixed; inset:0; z-index:0; pointer-events:none;
+    opacity:.5;
+    background-image:linear-gradient(var(--c-rule) 1px, transparent 1px);
+    background-size:100% 3.24em;
+    -webkit-mask-image:linear-gradient(to bottom, transparent 0, rgba(0,0,0,.22) 30%, transparent 100%);
+            mask-image:linear-gradient(to bottom, transparent 0, rgba(0,0,0,.22) 30%, transparent 100%);
+  }
+  .wca-capa{ position:relative; z-index:1; }
+
+  /* Un hijo de grid mide `min-width:auto` por defecto, y ahí un <pre> ancho empuja
+     la columna entera. Sin esto, la página scrollea horizontal en un teléfono. */
+  .wca-rejilla > *, .wca-fichas > *, .wca-paso > *, .wca-ficha > div > *{ min-width:0; }
+  .wca-medida{ max-width:var(--medida); min-width:0; }
+  .wca-ficha dd{ overflow-wrap:anywhere; }
+
+  /* ── la caja de la página ───────────────────────────────────── */
+  .wca-ancho{
+    max-width:var(--ancho);
+    margin-inline:auto;
+    padding-inline:var(--margen);
+  }
+
+  /* ── tipografía ─────────────────────────────────────────────── */
+  h1,h2,h3{ font-weight:400; letter-spacing:-.015em; }
+  h1{ line-height:1.02; }
+  h2{ line-height:1.1; }
+
+  .wca-titulo{ font-size:2.7rem; }
+  .wca-h2{ font-size:1.9rem; }
+  .wca-h3{ font-size:1.25rem; }
+  .wca-bajada{ font-size:1.08rem; }
+
+  .wca-mono{ font-family:var(--f-maq); }
+  .wca-num{ font-family:var(--f-maq); font-size:.9em; }
+  .wca-marca{ font-family:var(--f-maq); font-size:.72rem; letter-spacing:-.025em; }
+  .wca-b{ font-weight:400; }
+
+  .wca-cejilla{
+    font-family:var(--f-maq);
+    font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--c-muted);
+  }
+  .wca-fuente{
+    font-family:var(--f-maq); font-style:normal;
+    font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:var(--c-muted);
+  }
+
+  .wca-ok{ color:var(--c-ok); }
+  .wca-warn{ color:var(--c-warn); }
+  .wca-bad{ color:var(--c-bad); }
+  .wca-gris{ color:var(--c-muted); }
+
+  /* ── enlaces ────────────────────────────────────────────────── */
+  a{ color:inherit; text-decoration:none; }
+  .wca-link{
+    border-bottom:1px solid var(--c-rule);
+    transition:border-color .18s ease, color .18s ease;
+  }
+  .wca-link:hover{ border-color:var(--c-ok); color:var(--c-ok); }
+  .wca-link:focus-visible{ outline:2px solid var(--c-ok); outline-offset:3px; }
+
+  /* ── código ─────────────────────────────────────────────────── */
+  code{
+    font-family:var(--f-maq);
+    font-size:.86em;
+    background:var(--c-surface);
+    border:1px solid var(--c-rule);
+    border-radius:3px;
+    padding:.06em .34em;
+    white-space:nowrap;
+  }
+  pre{
+    font-family:var(--f-maq);
+    font-size:.78rem;
+    line-height:1.72;
+    background:var(--c-surface);
+    border:1px solid var(--c-rule);
+    padding:1.1rem 1.2rem;
+    overflow-x:auto;
+    max-width:100%;
+    white-space:pre;
+    tab-size:2;
+  }
+  pre code{ background:none; border:0; padding:0; font-size:inherit; white-space:pre; }
+
+  /* ── barra ──────────────────────────────────────────────────── */
+  .wca-barra{ border-bottom:1px solid var(--c-rule); }
+  .wca-barra-fila{
+    display:flex; flex-wrap:wrap; align-items:baseline;
+    column-gap:1.25rem; row-gap:.25rem;
+    padding-block:.75rem;
+  }
+  .wca-nav{ display:flex; gap:1rem; margin-left:auto; }
+
+  /* ── portada ────────────────────────────────────────────────── */
+  .wca-portada{ padding-top:4rem; padding-bottom:3.5rem; }
+  .wca-fichas{ display:grid; column-gap:2.5rem; row-gap:.5rem; }
+
+  /* ── secciones ──────────────────────────────────────────────── */
+  .wca-seccion{ border-top:1px solid var(--c-rule); }
+  .wca-bloque{ padding-block:3.5rem; }
+  .wca-rejilla{
+    display:grid; row-gap:2rem; column-gap:2.5rem;
+    padding-block:3.5rem;
+  }
+  .wca-numeral{
+    font-family:var(--f-maq);
+    font-size:.68rem; letter-spacing:.2em; color:var(--c-muted);
+  }
+
+  /* ── ficha de números ───────────────────────────────────────── */
+  .wca-ficha{ border-top:1px solid var(--c-rule); }
+  .wca-ficha > div{
+    display:flex; gap:1rem; justify-content:space-between; align-items:baseline;
+    padding:.62rem 0; border-bottom:1px solid var(--c-rule);
+    font-family:var(--f-maq);
+    font-size:.78rem;
+  }
+  .wca-ficha dt{ color:var(--c-muted); }
+  .wca-ficha dd{ text-align:right; }
+
+  /* ── los seis pasos ─────────────────────────────────────────── */
+  .wca-pasos{ border-top:1px solid var(--c-rule); }
+  .wca-paso{
+    display:grid; grid-template-columns:2.6rem 1fr; gap:0 1rem;
+    padding:.85rem 0; border-bottom:1px solid var(--c-rule);
+  }
+  .wca-paso b{
+    font-family:var(--f-maq);
+    font-weight:400; font-size:1.5rem; color:var(--c-muted); line-height:1.1;
+  }
+  .wca-escribe b{ color:var(--c-warn); }
+
+  /* ── tablas ─────────────────────────────────────────────────── */
+  .wca-scroll{ overflow-x:auto; max-width:100%; }
+  .wca-tabla{ width:100%; border-collapse:collapse; font-size:.86rem; }
+  .wca-tabla th{
+    text-align:left; font-weight:400; padding:.5rem .8rem .5rem 0;
+    border-bottom:1px solid var(--c-rule);
+    font-family:var(--f-maq);
+    font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--c-muted);
+    white-space:nowrap;
+  }
+  .wca-tabla td{ padding:.55rem .8rem .55rem 0; border-bottom:1px solid var(--c-rule); vertical-align:top; }
+  .wca-tabla td:first-child{ white-space:nowrap; }
+
+  /* ── cita ───────────────────────────────────────────────────── */
+  blockquote{
+    border-left:2px solid var(--c-rule);
+    padding-left:1.1rem;
+    color:var(--c-muted);
+    font-style:italic;
+  }
+
+  /* ── listas ─────────────────────────────────────────────────── */
+  ul.wca-lista{ border-top:1px solid var(--c-rule); }
+  ul.wca-lista > li{
+    padding:.42rem 0 .42rem 1.35rem; position:relative; border-bottom:1px solid var(--c-rule);
+  }
+  ul.wca-lista > li::before{
+    content:"—"; position:absolute; left:0; top:.42rem; color:var(--c-muted);
+    font-family:var(--f-maq);
+    font-size:.8rem;
+  }
+
+  /* ── pie ────────────────────────────────────────────────────── */
+  .wca-pie-fila{
+    margin-top:3.5rem; padding-top:1.25rem;
+    border-top:1px solid var(--c-rule);
+    display:flex; flex-wrap:wrap; column-gap:1.5rem; row-gap:.25rem;
+  }
+  .wca-derecha{ margin-left:auto; }
+
+  /* ── separaciones verticales ────────────────────────────────── */
+  .mt-1{ margin-top:.25rem; }
+  .mt-3{ margin-top:.75rem; }
+  .mt-4{ margin-top:1rem; }
+  .mt-5{ margin-top:1.25rem; }
+  .mt-6{ margin-top:1.5rem; }
+  .mt-7{ margin-top:1.75rem; }
+  .mt-8{ margin-top:2rem; }
+  .mt-10{ margin-top:2.5rem; }
+  .mt-12{ margin-top:3rem; }
+
+  /* ── entrada ────────────────────────────────────────────────── */
+  @keyframes wca-subir{ from{ opacity:0; transform:translateY(9px); } to{ opacity:1; transform:none; } }
+  .wca-entra{ animation:wca-subir .7s cubic-bezier(.2,.7,.3,1) both; }
+  @media (prefers-reduced-motion: reduce){
+    .wca-entra{ animation:none; }
+    body::after{ display:none; }
+  }
+
+  /* ── de 640 para arriba ─────────────────────────────────────── */
+  @media (min-width: 640px){
+    :root{ --margen:2rem; }
+    .wca-portada{ padding-top:6rem; }
+    .wca-bloque{ padding-block:5rem; }
+    .wca-rejilla{ padding-block:5rem; }
+    .wca-rejilla-seccion{ grid-template-columns:9rem 1fr; }
+    .wca-fichas{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .wca-titulo{ font-size:4.4rem; }
+    .wca-h2{ font-size:2.4rem; }
+    .wca-bajada{ font-size:1.22rem; }
+  }
+
+  /* ── de 640 para abajo ──────────────────────────────────────── */
+  @media (max-width: 640px){
+    body{ font-size:16px; }
+    pre{ font-size:.72rem; padding:.9rem; }
+    .wca-ficha > div{ flex-direction:column; gap:.1rem; }
+    .wca-ficha dd{ text-align:left; }
+  }
+</style>
+</head>
+<body>
+<div class="wca-capa">
+
+  <!-- ── barra ─────────────────────────────────────────────── -->
+  <header class="wca-barra">
+    <div class="wca-ancho wca-barra-fila">
+      <span class="wca-marca">whatsapp-closer-agentkit</span>
+      <span class="wca-cejilla">v0.1.0</span>
+      <span class="wca-cejilla">MIT</span>
+      <nav class="wca-cejilla wca-nav">
+        <a href="#problema" class="wca-link">problema</a>
+        <a href="#pasos" class="wca-link">pasos</a>
+        <a href="#verifica" class="wca-link">verificación</a>
+        <a href="#limites" class="wca-link">límites</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── portada ───────────────────────────────────────────── -->
+  <section class="wca-ancho wca-portada">
+    <p class="wca-cejilla wca-entra" style="animation-delay:.05s">Blueprint para Claude Code</p>
+    <h1 class="wca-entra wca-titulo mt-5" style="animation-delay:.12s">
+      Cerrador de<br>WhatsApp
+    </h1>
+    <p class="wca-entra wca-medida wca-bajada mt-7" style="animation-delay:.2s">
+      Este repo no trae la aplicación. Trae las instrucciones para que Claude Code la construya en
+      tu máquina, un archivo por fase, con las versiones fijadas y con la salida literal que tenés
+      que ver en cada paso.
+    </p>
+    <p class="wca-entra wca-medida wca-gris mt-4" style="animation-delay:.26s">
+      Lo que queda construido es un agente que atiende cada chat entrante con perfil de setter y
+      closer: califica, responde la objeción del playbook, ofrece horarios que existen, agenda, y
+      deja escrito en el CRM en qué quedó.
+    </p>
+
+    <div class="wca-entra wca-fichas mt-12" style="animation-delay:.34s">
+      <dl class="wca-ficha">
+        <div><dt>árbol sin construir · compuerta</dt><dd class="wca-ok">PASS · 0 errores</dd></div>
+        <div><dt>árbol sin construir · suite</dt><dd>49 passed, 182 skipped</dd></div>
+        <div><dt>chequeos de la compuerta</dt><dd>23</dd></div>
+      </dl>
+      <dl class="wca-ficha">
+        <div><dt>archivos del blueprint</dt><dd>15</dd></div>
+        <div><dt>comandos</dt><dd>10</dd></div>
+        <div><dt>dependencias fijadas con <code>==</code></dt><dd>28</dd></div>
+      </dl>
+    </div>
+    <p class="wca-entra wca-cejilla mt-5" style="animation-delay:.4s">
+      Cada renglón sale de un comando. Los comandos están en <a href="#verifica" class="wca-link">verificación</a>.
+    </p>
+  </section>
+
+  <!-- ── 01 el problema ────────────────────────────────────── -->
+  <section id="problema" class="wca-seccion">
+    <div class="wca-ancho wca-rejilla wca-rejilla-seccion">
+      <div>
+        <p class="wca-numeral">01</p>
+        <p class="wca-numeral mt-1">El problema</p>
+      </div>
+      <div class="wca-medida">
+        <h2 class="wca-h2">Dos problemas, uno arriba del otro</h2>
+
+        <p class="mt-6">
+          El de abajo es de instalación. <code>pip install</code> no da lo mismo en dos
+          computadoras, y no avisa. El caso que justifica el kit entero está en
+          <code>PINES.md</code>:
+        </p>
+
+        <div class="mt-5">
+<pre><code>fastapi 0.141.1  declara  starlette&gt;=0.46.0   <span class="wca-bad">← sin techo</span>
+starlette         1.3.1   2026-06-12          la última que existía
+                  1.4.0   2026-08-05  ┐
+                  1.4.1   2026-08-05  │  todas DESPUÉS de que
+                  1.5.0   2026-08-08  │  fastapi 0.141.1 se
+                  1.5.1   2026-08-08  │  congelara
+                  1.6.0   2026-08-08  ┘</code></pre>
+        </div>
+
+        <blockquote class="mt-5">
+          No falla al instalar. Falla después, raro, y el error no nombra a ninguno de los dos.
+          <span class="wca-fuente"> — PINES.md</span>
+        </blockquote>
+
+        <p class="mt-6">
+          Por eso acá nada se fija con <code>&gt;=</code>. Las 28 dependencias, el modelo y la
+          imagen base viven en un solo archivo, y la compuerta rechaza lo generado que no las
+          respete.
+        </p>
+
+        <p class="mt-6">
+          El de arriba es de venta. La gente pide un agente de WhatsApp que venda, no un bot de
+          menú: que califique, que responda objeciones, que agende. Hoy se contesta a mano. El que
+          escribe a las tres de la mañana se va con el que le contestó primero.
+        </p>
+
+        <h3 class="wca-h3 mt-10">La respuesta del kit: cuatro tiempos por paso</h3>
+        <p class="mt-3">
+          Cada paso del blueprint viene con la misma forma. <b class="wca-b wca-ok">Objetivo</b>,
+          qué queda cierto. <b class="wca-b wca-ok">Hacé esto</b>, el comando, copiable.
+          <b class="wca-b wca-ok">Tenés que ver</b>, la salida literal, no «debería andar».
+          <b class="wca-b wca-ok">Si falla</b>, cada modo de falla con su arreglo.
+        </p>
+        <blockquote class="mt-5">
+          El cuarto existe porque las computadoras son distintas. Un paso sin «Si falla» te deja
+          frente a una pantalla que dice que no y ninguna salida.
+          <span class="wca-fuente"> — blueprint/00-mapa.md</span>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 qué clase de repo es ───────────────────────────── -->
+  <section id="repo" class="wca-seccion">
+    <div class="wca-ancho wca-rejilla wca-rejilla-seccion">
+      <div>
+        <p class="wca-numeral">02</p>
+        <p class="wca-numeral mt-1">Qué clase de repo es</p>
+      </div>
+      <div class="wca-medida">
+        <h2 class="wca-h2">Instrucciones, no aplicación</h2>
+
+        <p class="mt-6">
+          En el clon no hay carpeta <code>agente/</code>. La escribe tu corrida. Es la diferencia
+          que explica los números de arriba: la compuerta pasa con once chequeos salteados y la
+          suite deja 182 pruebas dormidas, porque esperan un build que todavía no existe.
+        </p>
+
+        <p class="mt-6">
+          Lo que sí viene son 15 archivos de blueprint, uno por fase, y 10 comandos en
+          <code>.claude/skills/</code> que los abren en orden. La regla que repite el mapa: se lee
+          un archivo por fase, no los quince. Cargarlos todos gasta el contexto que la
+          construcción necesita al final.
+        </p>
+
+        <div class="mt-8 wca-scroll">
+          <table class="wca-tabla">
+            <thead>
+              <tr><th>Comando</th><th>Qué hace</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>/armar-cerrador</code></td><td>construye el cerrador entero, fase por fase</td></tr>
+              <tr><td><code>/seguir</code></td><td>retoma una construcción a medias, sin pisar nada en silencio</td></tr>
+              <tr><td><code>/configurar</code></td><td>catálogo, rango de precio, disponibilidad, escalación, canal interno</td></tr>
+              <tr><td><code>/playbook</code></td><td>las objeciones con su respuesta, el tono y el tratamiento</td></tr>
+              <tr><td><code>/conectar</code></td><td>las credenciales, que escribe quien instala</td></tr>
+              <tr><td><code>/probar</code></td><td>simulador de chat</td></tr>
+              <tr><td><code>/revisar</code></td><td>corre la compuerta</td></tr>
+              <tr><td><code>/publicar</code></td><td>despliega y da de alta el webhook</td></tr>
+              <tr><td><code>/bandeja</code></td><td>aprueba los borradores de a uno</td></tr>
+              <tr><td><code>/soltar</code></td><td>pasa el paso 3 a automático, si los números dan</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="mt-6 wca-gris">
+          Si la construcción se corta, el estado queda en <code>.wca-estado.json</code> con la fase
+          y el sha256 de cada archivo escrito. Es local y no va a git. Un archivo que cambió no se
+          reescribe en silencio: se dice qué cambió y se espera confirmación, archivo por archivo.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03 los seis pasos ─────────────────────────────────── -->
+  <section id="pasos" class="wca-seccion">
+    <div class="wca-ancho wca-rejilla wca-rejilla-seccion">
+      <div>
+        <p class="wca-numeral">03</p>
+        <p class="wca-numeral mt-1">Los seis pasos</p>
+      </div>
+      <div class="wca-medida">
+        <h2 class="wca-h2">Seis pasos, y son el contrato</h2>
+
+        <p class="mt-6">
+          La salida trae los seis elementos siempre, aunque cinco queden salteados. Es lo que deja
+          ver dónde se cortó el ciclo.
+        </p>
+
+        <div class="wca-pasos mt-8">
+          <div class="wca-paso">
+            <b>1</b>
+            <div><p>Recibí el mensaje y traé el contexto.</p>
+            <p class="wca-cejilla mt-1">webhook · historial · ficha del contacto · audio transcripto</p></div>
+          </div>
+          <div class="wca-paso">
+            <b>2</b>
+            <div><p>Detectá la intención y calificá.</p>
+            <p class="wca-cejilla mt-1">presupuesto · urgencia · encaje · score 0 a 100</p></div>
+          </div>
+          <div class="wca-paso wca-escribe">
+            <b>3</b>
+            <div><p>Respondé con el tono de marca y ofrecé horarios que existen.</p>
+            <p class="wca-cejilla wca-warn mt-1">le escribe a una persona</p></div>
+          </div>
+          <div class="wca-paso wca-escribe">
+            <b>4</b>
+            <div><p>Agendá y confirmá.</p>
+            <p class="wca-cejilla wca-warn mt-1">escribe en la agenda</p></div>
+          </div>
+          <div class="wca-paso wca-escribe">
+            <b>5</b>
+            <div><p>Escribí la etapa, el resumen y el próximo paso en el CRM.</p>
+            <p class="wca-cejilla wca-warn mt-1">escribe en la base</p></div>
+          </div>
+          <div class="wca-paso">
+            <b>6</b>
+            <div><p>Pasá el chat a un humano cuando corresponde.</p>
+            <p class="wca-cejilla mt-1">enojo · precio fuera de rango · palabra de escalación</p></div>
+          </div>
+        </div>
+
+        <p class="mt-7">
+          Los pasos 3, 4 y 5 escriben afuera. El modo por defecto es <code>borrador</code>:
+          redactan, muestran y esperan confirmación explícita. Pasar a <code>automatico</code> lo
+          decide quien instala, y se hace con <code>/soltar</code>.
+        </p>
+
+        <h3 class="wca-h3 mt-10">Los seis invariantes</h3>
+        <p class="mt-3 wca-gris">
+          Ningún archivo del blueprint los puede romper, y cada uno tiene su chequeo en la
+          compuerta.
+        </p>
+        <ul class="wca-lista mt-4">
+          <li>Las firmas se verifican sobre el <b class="wca-b wca-ok">cuerpo crudo</b>, con
+            <code>hmac.compare_digest</code>. Reserializar el JSON para firmarlo pasa todas las
+            pruebas y falla todas las entregas reales.</li>
+          <li>Todo lo que sale pasa por un solo <code>enviar()</code>: ventana de 24 horas, chequeo
+            de baneo, y nunca escribirle primero a quien no escribió.</li>
+          <li>Un solo cliente HTTP, con <code>timeout=</code> explícito.</li>
+          <li>Ninguna credencial en el árbol. Los secretos los escribe quien instala, nunca una
+            tool call.</li>
+          <li>Ningún precio ni plazo que no esté en el catálogo. Ninguna objeción que no esté en el
+            playbook: se nombra y se deja para el humano.</li>
+          <li>Las versiones y el modelo salen de <code>PINES.md</code> y de ningún otro lado.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 04 qué queda construido ───────────────────────────── -->
+  <section id="construido" class="wca-seccion">
+    <div class="wca-ancho wca-rejilla wca-rejilla-seccion">
+      <div>
+        <p class="wca-numeral">04</p>
+        <p class="wca-numeral mt-1">Qué queda construido</p>
+      </div>
+      <div class="wca-medida">
+        <h2 class="wca-h2">Las piezas que escribe la corrida</h2>
+
+        <div class="mt-8 wca-scroll">
+          <table class="wca-tabla">
+            <thead><tr><th>Pieza</th><th>Cómo queda</th></tr></thead>
+            <tbody>
+              <tr><td>Proveedor</td><td><code>meta</code>, <code>zernio</code> o <code>demo</code>, contra una sola interfaz. <code>demo</code> no pide credenciales y no es un transporte falso: reproduce entregas grabadas, con los mismos bytes crudos, la misma cabecera de firma y el mismo camino de deduplicación.</td></tr>
+              <tr><td>Audio</td><td>se transcribe con la API de Whisper (<code>OPENAI_API_KEY</code>). Sin esa clave el paso 1 se detiene con el motivo escrito, no con una transcripción inventada.</td></tr>
+              <tr><td>Imagen</td><td>la lee el modelo de Anthropic que ya está configurado. No hay una clave de visión que conseguir.</td></tr>
+              <tr><td>Agenda</td><td>Google Calendar: el evento, y el recordatorio 24 horas antes.</td></tr>
+              <tr><td>CRM</td><td>la tabla <code>leads</code>, y el paso 5 escribiendo en ella.</td></tr>
+              <tr><td>Panel y API</td><td><code>agente/servidor.py</code>: diez rutas y once métodos —el GET y el POST de <code>/webhook/{proveedor}</code> comparten camino—, la API detrás de <code>PANEL_TOKEN</code> y una vista que se abre en el navegador.</td></tr>
+              <tr><td>Despliegue</td><td>la laptop, un Mac Mini o Railway. Railway es el default del blueprint, pero la elección la hace quien instala.</td></tr>
+              <tr><td>Bandeja</td><td>los borradores se resuelven de a uno. Aprobar no manda: vuelve a correr el paso con <code>confirmado</code> en verdadero, y manda el único <code>enviar()</code>.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="mt-7">
+          Las credenciales son 18 variables, y <code>env.example</code> trae los nombres y de dónde
+          se saca cada valor. Nunca un valor. La única que hace falta siempre es la de Anthropic:
+          el modo <code>demo</code> se ahorra las credenciales de WhatsApp, no el modelo que
+          redacta.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 05 cómo se verifica ───────────────────────────────── -->
+  <section id="verifica" class="wca-seccion">
+    <div class="wca-ancho wca-rejilla wca-rejilla-seccion">
+      <div>
+        <p class="wca-numeral">05</p>
+        <p class="wca-numeral mt-1">Cómo se verifica</p>
+      </div>
+      <div class="wca-medida">
+        <h2 class="wca-h2">Dos comandos, y los podés correr vos</h2>
+
+        <p class="mt-6">
+          Esto es lo que dio un árbol sin construir, o sea sin la carpeta <code>agente/</code>. No
+          lo copies de acá: corré los dos comandos y compará.
+        </p>
+
+        <div class="mt-6">
+<pre><code>$ .venv/bin/python scripts/auditar.py
+
+auditar · whatsapp-closer-agentkit · sin agente/: todavía no se construyó
+
+  [ok      ] 01 blueprint-existe   15 archivo(s) citados por 26, todos con contenido
+  [ok      ] 02 manifiesto         7 plantillas al día con el manifiesto.
+  [ok      ] 05 pines              28 pines en 1 archivo(s), MODELO=claude-opus-5, imagen python:3.12-slim, verif
+  [salteado] 06 deps-imports       no existe agente/: esto corre después de /armar-cerrador
+  [ok      ] 08 secretos           102 archivos revisados, 7 patrones
+  [ok      ] 17 contrato-control   6/6 mutaciones rechazadas
+  [ok      ] 19 pruebas            50 passed, 203 skipped in 0.25s · 203 salteado(s): 0 sólo en vivo, 203 esperan
+  [salteado] 23 censo-de-campos    el censo no corrió en este árbol: no hay EVIDENCIA/censo.json. Corrélo con `.v
+
+<span class="wca-ok">auditar: PASS · 0 errores</span> · <span class="wca-warn">1 aviso</span> · 11 salteados
+  un salteado no es un aprobado: leé el motivo de cada uno.</code></pre>
+        </div>
+
+        <p class="mt-3 wca-cejilla">
+          Recorte: van 8 de los 23 renglones, verbatim. El bloque desliza a la derecha. Los cortes
+          al final del renglón son de la herramienta. Los segundos cambian en cada corrida.
+        </p>
+
+        <div class="mt-6">
+<pre><code>$ .venv/bin/python -m pytest -q
+
+50 passed, 203 skipped in 0.25s</code></pre>
+        </div>
+
+        <p class="mt-7">
+          Los 11 salteados y las 203 dormidas son el estado correcto de un árbol sin build: esperan
+          <code>agente/</code>. La compuerta lo dice con un aviso y no con un error, por eso mismo.
+          Ese es el único aviso de esta corrida. En cuanto el build exista, dejan de estar salteadas
+          y hay que volver a mirar. Un segundo aviso aparece si git todavía no tiene en el índice los
+          archivos del núcleo, así que sobre una copia a medio commitear puede darte distinto.
+        </p>
+
+        <h3 class="wca-h3 mt-10">Qué mide la compuerta</h3>
+        <p class="mt-3">
+          23 chequeos. Los primeros veintidós miran el árbol: que el blueprint esté entero, que las
+          plantillas no se hayan derivado del manifiesto, que las versiones sean las de
+          <code>PINES.md</code>, que no haya un secreto escrito en un archivo, que haya un solo
+          cliente HTTP y un solo <code>enviar()</code>, que el esquema de salida no acepte una
+          mutación que debería rechazar.
+        </p>
+        <p class="mt-4">
+          La compuerta no abre un socket ni lee un secreto, y eso es a propósito: un chequeo que
+          sale a la red se queda esperando un timeout con mala conexión, y ahí no hay reporte.
+        </p>
+
+        <h3 class="wca-h3 mt-10">El chequeo 23: el censo de campos</h3>
+        <p class="mt-3">
+          El vigesimotercero mide un piso más arriba. Va campo por campo del contrato de salida, lo
+          muta, y vuelve a correr la suite: si ningún nodo se pone rojo, ese campo lo declara el
+          contrato y no lo afirma nadie.
+        </p>
+        <p class="mt-4">
+          En un clon no puede correr, porque no hay salida que mutar:
+        </p>
+        <div class="mt-4">
+<pre><code>$ .venv/bin/python scripts/auditar.py --censo
+
+censo: no se pudo medir. el censo necesita el build: no existe
+agente/ciclo.py, así que no hay ninguna salida que mutar y los 43
+campos declarados quedan sin medir. La mitad estática —la lista
+`SIN_ASERCION` contra el esquema— sí corre en el chequeo 23 sin build</code></pre>
+        </div>
+        <p class="mt-4">
+          Ya corrió una vez sobre un build. De los 43 campos:
+          <b class="wca-b wca-ok">31 afirmados</b>,
+          <b class="wca-b wca-gris">3 que el esquema fija</b> y no tienen mutante posible, y
+          <b class="wca-b wca-bad">9 sin aserción</b>. Ese número está publicado, con los
+          nueve nombres, en <code>PENDIENTES.md</code>.
+        </p>
+
+        <h3 class="wca-h3 mt-10">Seis generaciones</h3>
+        <p class="mt-3">
+          Seis corridas independientes construyeron el agente desde este blueprint. Las tres
+          últimas cerraron en <span class="wca-num">199</span>,
+          <span class="wca-num">217</span> y
+          <span class="wca-num">231 passed</span>, con la compuerta en
+          <span class="wca-num wca-ok">PASS · 0 errores · 0 avisos · 0 salteados</span>.
+        </p>
+        <p class="mt-4 wca-gris">
+          Esos números no salen de este clon y no pueden: acá no hay <code>agente/</code>. Lo que
+          da un clon recién bajado es lo de arriba, y eso sí lo podés reproducir en tu máquina en
+          dos comandos.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 06 los límites ────────────────────────────────────── -->
+  <section id="limites" class="wca-seccion">
+    <div class="wca-ancho wca-rejilla wca-rejilla-seccion">
+      <div>
+        <p class="wca-numeral">06</p>
+        <p class="wca-numeral mt-1">Los límites</p>
+      </div>
+      <div class="wca-medida">
+        <h2 class="wca-h2">Lo que no hace, y lo que todavía falta</h2>
+
+        <h3 class="wca-h3 mt-8">Lo que el agente no hace</h3>
+        <ul class="wca-lista mt-4">
+          <li><b class="wca-b">No inventa precios ni promociones.</b> Lo que no está en el
+            catálogo que le pasás, no existe. Un descuento inventado por un agente lo termina
+            pagando el negocio.</li>
+          <li><b class="wca-b">No responde objeciones que no estén en tu playbook.</b> Las
+            nombra y las deja para el humano.</li>
+          <li><b class="wca-b">No escribe primero.</b> Contesta a quien le escribió. No hace
+            envíos masivos y no abre conversaciones frías: eso es lo que hace que Meta baje el
+            número.</li>
+          <li><b class="wca-b">No negocia un precio fuera de rango.</b> Eso escala, siempre.</li>
+          <li><b class="wca-b">No sigue contestando después de una escalación.</b> Ni para
+            despedirse.</li>
+          <li><b class="wca-b">No borra ni reordena nada del CRM.</b> Agrega y actualiza la
+            fila del contacto.</li>
+        </ul>
+
+        <h3 class="wca-h3 mt-10">Un límite que no pone el agente</h3>
+        <p class="mt-3">
+          Fuera de la ventana de 24 horas desde el último mensaje del contacto, WhatsApp solo deja
+          mandar plantillas aprobadas. El recordatorio del paso 4 cae casi siempre afuera de esa
+          ventana, así que necesita una plantilla dada de alta por Meta, y la aprobación tarda.
+        </p>
+
+        <h3 class="wca-h3 mt-10">La compuerta en verde no quiere decir que ande contra Meta</h3>
+        <p class="mt-3">
+          Quiere decir que el kit está bien armado. Lo que se cierra a mano, una vez, con tus
+          credenciales, está en <code>PENDIENTES.md</code>, cada uno con cómo se ve cuando falla:
+        </p>
+        <ul class="wca-lista mt-4">
+          <li>La firma del webhook contra tu secreto. Cuando falla, el handler contesta 401 y con
+            Meta el mensaje no llega, sin error a la vista.</li>
+          <li>El token permanente de Meta, no el de 24 horas. Cuando falla, todo anda la primera
+            tarde y a la mañana siguiente hay 401 en cada envío, sin ningún cambio de tu lado.</li>
+          <li>La plantilla del recordatorio, aprobada antes de agendar la primera cita real.</li>
+          <li>La tabla <code>leads</code> y el permiso de escritura de tu clave.</li>
+        </ul>
+
+        <h3 class="wca-h3 mt-10">Nueve campos que ninguna prueba afirma</h3>
+        <p class="mt-3">
+          Los encontró el censo y están publicados con nombre y apellido, no escondidos:
+        </p>
+        <div class="mt-4">
+<pre><code>calificacion/intencion          crm/resumen
+calificacion/urgencia           crm/proximo_paso
+respuesta/objecion_detectada    crm/proximo_paso_fecha
+respuesta/objecion_en_playbook  pregunta
+                                supuestos</code></pre>
+        </div>
+        <p class="mt-4">
+          El peor de los nueve es <code>objecion_en_playbook</code>: lo que decide es si el
+          playbook se buscó o no, que es lo único que separa este agente de un bot de menú.
+        </p>
+
+        <h3 class="wca-h3 mt-10">Un camino frenado</h3>
+        <p class="mt-3">
+          Para Google Calendar, <code>authorized_user</code> llega hasta el final.
+          <code>service_account</code> está detenido: el token pide un JWT firmado con RS256 y
+          ninguna librería que lo haga está en <code>PINES.md</code>. Está declarado, no
+          improvisado.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── cierre ────────────────────────────────────────────── -->
+  <footer class="wca-seccion">
+    <div class="wca-ancho wca-bloque">
+      <div class="wca-medida">
+        <p class="wca-cejilla">Por dónde se empieza</p>
+        <p class="mt-4">
+          Abrí <code>blueprint/00-mapa.md</code>, que dice qué archivo sigue y cómo se retoma. O
+          corré <code>/armar-cerrador</code> y dejá que la cadena te lleve. Sin ninguna credencial
+          de WhatsApp arranca igual, con <code>WHATSAPP_PROVIDER=demo</code>.
+        </p>
+        <p class="mt-6 wca-gris">
+          Nada queda listo sin <code>scripts/auditar.py</code> en verde. Y un chequeo salteado no
+          es un chequeo aprobado.
+        </p>
+      </div>
+      <div class="wca-pie-fila wca-cejilla">
+        <span>whatsapp-closer-agentkit</span>
+        <span>v0.1.0</span>
+        <span>MIT</span>
+        <span class="wca-derecha">Los números de esta página salen de correr los comandos, no de recordarlos.</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

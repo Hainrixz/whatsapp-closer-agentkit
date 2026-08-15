@@ -1,0 +1,139 @@
+{
+  "additionalProperties": false,
+  "description": "Lo que el modelo emite en una vuelta del cerrador.\n\nTodo lo demás de la salida —los seis pasos, el estado, si el mensaje salió, si la fila se\nescribió, la cita, el handoff y los horarios ofrecidos— lo decide el código a partir de\nesto. No lo reportes acá.",
+  "properties": {
+    "intencion": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Qué quiere el contacto, en tres o cuatro palabras. Nulo si el mensaje no alcanza."
+    },
+    "score": {
+      "description": "Qué tan cerca está de comprar, de 0 a 100, con lo que dice el mensaje y el historial.\nLos cortes de temperatura los aplica el código con los umbrales de la entrada.",
+      "type": "integer"
+    },
+    "presupuesto": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Monto que el contacto declaró, en la moneda del catálogo. Nulo si no lo dijo. No lo\ndeduzcas ni lo estimes: si no hay un número dicho, va nulo y el score se calcula sin él."
+    },
+    "presupuesto_evidencia": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "La subcadena LITERAL del mensaje del contacto donde aparece ese monto, copiada carácter\npor carácter y con el número adentro. El código comprueba las dos cosas —que esté en el\nmensaje y que traiga cifras—; si falla alguna, tira el presupuesto a nulo. Nulo cuando\n`presupuesto` es nulo."
+    },
+    "urgencia": {
+      "anyOf": [
+        {
+          "enum": [
+            "alta",
+            "media",
+            "baja"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Qué tan apurado está, por lo que dice. Nulo si no hay señal."
+    },
+    "motivo": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Una línea: por qué ese score y no otro."
+    },
+    "texto": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "La respuesta para el contacto, con el tono del playbook. Responde la objeción que\nencontraste y cierra con los horarios que te pasaron, sin agregar ninguno. Ningún precio\nque no esté en el catálogo. Nulo cuando no corresponde escribirle nada."
+    },
+    "objecion_detectada": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "La objeción del contacto, con las palabras del playbook si es una de ahí. Si no está en\nel playbook nombrala igual: el código la marca como fuera de playbook y la deja para el\nhumano. Nulo si no hubo objeción."
+    },
+    "resumen": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Tres líneas para el CRM: qué quería, qué se le respondió, qué falta. Nunca la\nconversación entera."
+    },
+    "proximo_paso": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Qué hay que hacer después, en una línea. Nulo si no hay uno claro."
+    },
+    "proximo_paso_fecha": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "La fecha de ese próximo paso, `AAAA-MM-DD`. El código la parsea y lo que no parsea queda\nnulo."
+    }
+  },
+  "required": [
+    "intencion",
+    "score",
+    "presupuesto",
+    "presupuesto_evidencia",
+    "urgencia",
+    "motivo",
+    "texto",
+    "objecion_detectada",
+    "resumen",
+    "proximo_paso",
+    "proximo_paso_fecha"
+  ],
+  "type": "object"
+}

@@ -1,0 +1,88 @@
+name: Algo del kit no anda
+description: Un paso del blueprint no da lo que dice «Tenés que ver», o la compuerta sale roja.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Antes de escribir: **no pegues tu `.env` ni ninguna credencial acá.** Ni el
+        `WHATSAPP_TOKEN`, ni el `META_APP_SECRET`, ni el JSON de la cuenta de servicio,
+        ni el `ANTHROPIC_API_KEY`. Un issue es público y no se puede despublicar: un
+        token que pasó por acá hay que rotarlo, no borrarlo.
+
+        Si lo que encontraste es un problema de seguridad, no abras un issue.
+        Está [`SECURITY.md`](../blob/main/SECURITY.md) para eso.
+
+  - type: textarea
+    id: compuerta
+    attributes:
+      label: La salida de la compuerta
+      description: |
+        Las últimas líneas alcanzan: el veredicto y los hallazgos. No abre sockets ni
+        lee secretos, así que se puede pegar entera.
+      render: console
+      placeholder: |
+        $ .venv/bin/python scripts/auditar.py
+        auditar: FAIL · 1 errores · 0 avisos · 3 salteados
+    validations:
+      required: true
+
+  - type: input
+    id: paso
+    attributes:
+      label: Dónde se cortó
+      description: El archivo de `blueprint/` y el número de paso, o el comando que corriste.
+      placeholder: "blueprint/30-generacion.md, paso 4 · o: /probar"
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Qué decía «Tenés que ver» y qué viste
+      description: |
+        Cada paso del blueprint trae el renglón de lo que tiene que aparecer en pantalla.
+        Copiá ese renglón, y abajo lo que salió de verdad.
+    validations:
+      required: true
+
+  - type: input
+    id: python
+    attributes:
+      label: Versión de Python
+      description: "La salida de `python3 -VV`. `PINES.md` acepta de 3.11 a 3.14."
+      placeholder: "Python 3.12.8 (main, ...) [Clang ...]"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: sistema
+    attributes:
+      label: Sistema
+      options:
+        - macOS
+        - Linux
+        - Windows (PowerShell)
+        - Windows (WSL)
+        - Windows (Git Bash)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: proveedor
+    attributes:
+      label: Proveedor de WhatsApp
+      description: El valor de `WHATSAPP_PROVIDER`. El nombre, no la credencial.
+      options:
+        - demo
+        - meta
+        - zernio
+        - todavía no elegí
+    validations:
+      required: true
+
+  - type: textarea
+    id: mas
+    attributes:
+      label: Algo más
+      description: Lo que ya probaste, o lo que te parece que lo causa. Opcional.

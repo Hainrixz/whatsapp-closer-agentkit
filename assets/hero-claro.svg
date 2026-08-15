@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 360" width="1280" height="360"
+     role="img" aria-labelledby="titulo descripcion"
+     font-family="ui-sans-serif, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif">
+  <title id="titulo">Cerrador de WhatsApp</title>
+  <desc id="descripcion">Blueprint para construir un agente cerrador de WhatsApp, con los seis pasos del ciclo: recibir el mensaje, calificar, responder y ofrecer horarios, agendar, escribir en el CRM y pasar el chat a un humano.</desc>
+
+  <!-- fondo explicito: sin esto el SVG se vuelve ilegible sobre el tema contrario -->
+  <rect x="0" y="0" width="1280" height="360" fill="#FFFFFF"/>
+  <rect x="0" y="0" width="1280" height="3" fill="#0E7A62"/>
+
+  <!-- nombre del paquete -->
+  <rect x="60" y="34" width="226" height="26" rx="13" fill="#E7F2EE" stroke="#D2E4DD" stroke-width="1"/>
+  <text x="72" y="52" font-size="14" fill="#0E7A62"
+        font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">whatsapp-closer-agentkit</text>
+
+  <!-- el default, del otro lado -->
+  <rect x="1010" y="34" width="210" height="26" rx="13" fill="none" stroke="#E2E8E5" stroke-width="1"/>
+  <text x="1115" y="52" font-size="14" fill="#6B7780" text-anchor="middle">modo borrador por defecto</text>
+
+  <!-- titulo -->
+  <text x="60" y="112" font-size="46" font-weight="700" fill="#0F1512" letter-spacing="-0.5">Cerrador de WhatsApp</text>
+
+  <!-- que es -->
+  <text x="60" y="146" font-size="18" fill="#4E5A63">Un blueprint, no una aplicación: instrucciones que Claude Code ejecuta en tu máquina</text>
+  <text x="60" y="170" font-size="18" fill="#4E5A63">para construir el agente que atiende, califica, agenda y escribe en el CRM.</text>
+
+  <!-- tira de los seis pasos -->
+  <text x="60" y="202" font-size="15" fill="#6B7780" letter-spacing="0.4">Los seis pasos · el 3, el 4 y el 5 escriben afuera y piden confirmación</text>
+
+  <!-- 1 -->
+  <rect x="60" y="216" width="180" height="120" rx="10" fill="#F7F9F8" stroke="#E2E8E5" stroke-width="1"/>
+  <rect x="74" y="230" width="24" height="24" rx="7" fill="#0E7A62"/>
+  <text x="86" y="247" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">1</text>
+  <text x="74" y="282" font-size="16" fill="#0F1512">Recibí el mensaje</text>
+  <text x="74" y="303" font-size="16" fill="#0F1512">y traé el contexto</text>
+
+  <path d="M245 234 l7 7 l-7 7" fill="none" stroke="#C3CDC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 2 -->
+  <rect x="256" y="216" width="180" height="120" rx="10" fill="#F7F9F8" stroke="#E2E8E5" stroke-width="1"/>
+  <rect x="270" y="230" width="24" height="24" rx="7" fill="#0E7A62"/>
+  <text x="282" y="247" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">2</text>
+  <text x="270" y="282" font-size="16" fill="#0F1512">Detectá la</text>
+  <text x="270" y="303" font-size="16" fill="#0F1512">intención</text>
+  <text x="270" y="324" font-size="16" fill="#0F1512">y calificá</text>
+
+  <path d="M441 234 l7 7 l-7 7" fill="none" stroke="#C3CDC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 3 -->
+  <rect x="452" y="216" width="180" height="120" rx="10" fill="#F7F9F8" stroke="#E2E8E5" stroke-width="1"/>
+  <rect x="466" y="230" width="24" height="24" rx="7" fill="#0E7A62"/>
+  <text x="478" y="247" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">3</text>
+  <circle cx="618" cy="242" r="4" fill="#0E7A62"/>
+  <text x="466" y="282" font-size="16" fill="#0F1512">Respondé con el</text>
+  <text x="466" y="303" font-size="16" fill="#0F1512">tono de marca</text>
+  <text x="466" y="324" font-size="16" fill="#0F1512">y ofrecé horarios</text>
+
+  <path d="M637 234 l7 7 l-7 7" fill="none" stroke="#C3CDC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 4 -->
+  <rect x="648" y="216" width="180" height="120" rx="10" fill="#F7F9F8" stroke="#E2E8E5" stroke-width="1"/>
+  <rect x="662" y="230" width="24" height="24" rx="7" fill="#0E7A62"/>
+  <text x="674" y="247" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">4</text>
+  <circle cx="814" cy="242" r="4" fill="#0E7A62"/>
+  <text x="662" y="282" font-size="16" fill="#0F1512">Agendá</text>
+  <text x="662" y="303" font-size="16" fill="#0F1512">y confirmá</text>
+
+  <path d="M833 234 l7 7 l-7 7" fill="none" stroke="#C3CDC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 5 -->
+  <rect x="844" y="216" width="180" height="120" rx="10" fill="#F7F9F8" stroke="#E2E8E5" stroke-width="1"/>
+  <rect x="858" y="230" width="24" height="24" rx="7" fill="#0E7A62"/>
+  <text x="870" y="247" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">5</text>
+  <circle cx="1010" cy="242" r="4" fill="#0E7A62"/>
+  <text x="858" y="282" font-size="16" fill="#0F1512">Escribí</text>
+  <text x="858" y="303" font-size="16" fill="#0F1512">en el CRM</text>
+
+  <path d="M1029 234 l7 7 l-7 7" fill="none" stroke="#C3CDC8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 6 -->
+  <rect x="1040" y="216" width="180" height="120" rx="10" fill="#F7F9F8" stroke="#E2E8E5" stroke-width="1"/>
+  <rect x="1054" y="230" width="24" height="24" rx="7" fill="#0E7A62"/>
+  <text x="1066" y="247" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">6</text>
+  <text x="1054" y="282" font-size="16" fill="#0F1512">Pasá el chat a un</text>
+  <text x="1054" y="303" font-size="16" fill="#0F1512">humano cuando</text>
+  <text x="1054" y="324" font-size="16" fill="#0F1512">corresponde</text>
+</svg>

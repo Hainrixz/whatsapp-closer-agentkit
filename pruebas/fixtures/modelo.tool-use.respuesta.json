@@ -1,0 +1,43 @@
+{
+  "id": "msg_01PruebaSinCredencialToolUse",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-opus-5",
+  "content": [
+    {
+      "type": "thinking",
+      "thinking": "",
+      "signature": "ErUBCkYIBRgCKkBwcnVlYmEtc2luLWNyZWRlbmNpYWwtZmlybWEtZGUtcGVuc2FtaWVudG8tbm8tdXNhci1lbi1wcm9kdWNjaW9u"
+    },
+    {
+      "type": "text",
+      "text": "Voy a calificar el mensaje y a dejar la respuesta en la herramienta."
+    },
+    {
+      "type": "tool_use",
+      "id": "toolu_01PruebaSalidaWire",
+      "name": "salida_wire",
+      "input": {
+        "intencion": "precio del curso",
+        "score": 62,
+        "presupuesto": null,
+        "presupuesto_evidencia": null,
+        "urgencia": "media",
+        "motivo": "Preguntó precio y puso una objeción que está en el playbook.",
+        "texto": "El curso sale 12000 MXN y se puede en tres partes. ¿Te va alguno de estos horarios?",
+        "objecion_detectada": "Está caro",
+        "resumen": "Preguntó el precio del curso de bienes raíces.\nSe le respondió la objeción de precio y se le ofrecieron tres horarios.\nFalta que elija uno.",
+        "proximo_paso": "Confirmar horario",
+        "proximo_paso_fecha": "2026-03-03"
+      }
+    }
+  ],
+  "stop_reason": "tool_use",
+  "stop_sequence": null,
+  "usage": {
+    "input_tokens": 4312,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 3968,
+    "output_tokens": 291
+  }
+}

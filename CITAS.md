@@ -32,8 +32,9 @@ la revisa.
 
 ## Cómo se verifica
 
-`scripts/validar_artefacto.py` corre `citas_resuelven` sobre este archivo y sobre todo el
-árbol. Comprueba dos cosas:
+No acá. El chequeo `citas_resuelven` corre en el árbol de la forja, contra el corpus privado,
+y ese árbol no viaja con este kit: `scripts/auditar.py`, que es la compuerta de acá, no lee
+`CORPUS.md` ni sale a buscarlo. Comprueba dos cosas del lado de la forja:
 
 1. Que cada `R####` exista en `CORPUS.md`.
 2. Que esté entre las citas de esta ficha.

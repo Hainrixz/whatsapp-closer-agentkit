@@ -1,0 +1,21 @@
+# Las dos plantillas de arriba son para lo que se puede reproducir. Todo lo demás
+# —«no entiendo el paso 4», «¿me sirve para mi negocio?», «cómo escribo el playbook»—
+# va a Discussions, que no lleva estado de abierto y cerrado.
+#
+# `blank_issues_enabled: false` es a propósito: un issue en blanco casi siempre llega
+# sin la salida de la compuerta ni la versión de Python, y ahí la primera respuesta se
+# gasta en pedir eso.
+blank_issues_enabled: false
+
+contact_links:
+  - name: Una pregunta, no un bug
+    url: https://github.com/Hainrixz/whatsapp-closer-agentkit/discussions
+    about: Dudas sobre un paso, sobre el playbook o sobre si esto le sirve a tu negocio.
+
+  - name: Los límites conocidos, antes de escribir
+    url: https://github.com/Hainrixz/whatsapp-closer-agentkit/blob/main/PENDIENTES.md
+    about: Nueve cosas que la compuerta no puede probar, con cómo se ven cuando fallan.
+
+  - name: Un problema de seguridad
+    url: https://github.com/Hainrixz/whatsapp-closer-agentkit/security/advisories/new
+    about: Nunca en un issue público. Se reporta en privado, acá.

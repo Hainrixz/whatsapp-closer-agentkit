@@ -1,0 +1,83 @@
+{
+  "version": "1",
+  "mensaje": {
+    "de": "5215500000001",
+    "contacto_id": "bsu_02HZK3M9QX7T2VW4",
+    "tipo": "texto",
+    "texto": "Una porquería de servicio, no me hagan perder más el tiempo.",
+    "media_id": null,
+    "media_url": null,
+    "media_local": null,
+    "recibido_en": "2026-03-02T03:41:00-06:00"
+  },
+  "modo": "automatico",
+  "confirmado": false,
+  "playbook": {
+    "tono": "Directo, de tú a tú, sin promesas de resultado.",
+    "objeciones": [
+      {
+        "objecion": "Está caro",
+        "respuesta": "Se compara contra lo que cuesta una operación mal cerrada, y hay pago en tres partes."
+      },
+      {
+        "objecion": "No tengo tiempo",
+        "respuesta": "Son cuatro horas por semana y las clases quedan grabadas."
+      },
+      {
+        "objecion": "Lo tengo que consultar",
+        "respuesta": "Te dejo el resumen de una página para que lo muestres."
+      },
+      {
+        "objecion": "Ya intenté algo parecido",
+        "respuesta": "Preguntá qué le faltó a eso antes de contestar."
+      },
+      {
+        "objecion": "Después te aviso",
+        "respuesta": "Ofrecé una fecha concreta para retomar, no un «cuando puedas»."
+      }
+    ]
+  },
+  "catalogo": [
+    {
+      "nombre": "Curso de bienes raíces",
+      "precio": 12000,
+      "moneda": "MXN"
+    }
+  ],
+  "rango_precio": {
+    "minimo": 8000,
+    "maximo": 40000
+  },
+  "disponibilidad": [
+    {
+      "inicio": "2026-03-02T11:00:00-06:00",
+      "duracion_min": 30
+    },
+    {
+      "inicio": "2026-03-02T17:00:00-06:00",
+      "duracion_min": 30
+    },
+    {
+      "inicio": "2026-03-03T10:00:00-06:00",
+      "duracion_min": 30
+    },
+    {
+      "inicio": "2026-03-04T16:00:00-06:00",
+      "duracion_min": 30
+    }
+  ],
+  "opciones_horario": 3,
+  "umbrales": {
+    "caliente": 70,
+    "tibio": 40
+  },
+  "palabras_escalacion": [
+    "humano",
+    "persona real",
+    "reclamo",
+    "abogado",
+    "estafa",
+    "cancelar"
+  ],
+  "canal_interno": "#ventas-escalaciones"
+}

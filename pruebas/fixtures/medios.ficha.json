@@ -1,0 +1,25 @@
+{
+  "version": "1",
+  "que_es": "Los dos medios entrantes del camino feliz, con lo que el proveedor declara de cada uno. Los lee `pruebas/test_camino_feliz.py`: el doble del transporte sirve estos bytes y la prueba exige que sean los mismos que quedan en `medios/<contacto_id>/<media_id>`, los mismos que viajan a la transcripción y los mismos que van en el bloque de imagen. Cambiar un fixture cambia la aserción; un valor escrito a mano en la prueba la desengancharía del disco.",
+  "contacto_id": "bsu_camino_feliz_medios",
+  "numero": "5215500000004",
+  "audio": {
+    "archivo": "medios.nota-de-voz.ogg",
+    "media_id": "1042938471029384",
+    "mime_type": "audio/ogg; codecs=opus",
+    "sha256": "4faaab6c17056ba135e450cde953885d58ff49938730d66d34d1b71f25d3bfa8",
+    "bytes": 115,
+    "transcripcion": "Hola, vi el curso de bienes raíces, referencia AU-5T9. ¿Cuánto sale? Me interesa pero se me hace caro.",
+    "marca": "AU-5T9",
+    "nota": "Es la cabecera de identificación de un Ogg/Opus de verdad —`OpusHead` y `OpusTags`, con el CRC del contenedor calculado— y no trae audio. Nadie en esta suite lo decodifica: lo que se afirma es que los bytes que sirvió el doble son los que quedaron en disco y los que viajaron a la transcripción. WhatsApp manda las notas de voz en OGG/Opus y Whisper las acepta tal como llegan; ver `blueprint/32-multimodal.md` paso 2 y S07 en `SUPUESTOS.md`."
+  },
+  "imagen": {
+    "archivo": "medios.foto-recibida.webp",
+    "media_id": "1042938471029385",
+    "mime_type": "image/webp",
+    "sha256": "bd25bde9fc4427cd6f3babcb8f888fe6174ca48881c103e243d4c6f83f30aab6",
+    "bytes": 44,
+    "nota": "WebP a propósito, y no jpeg: el `media_type` del bloque de imagen sale del `mime_type` de la bajada y nunca de la extensión del archivo, que acá no existe —se guarda con el nombre del `media_id`—. Un build que asuma `image/jpeg` porque WhatsApp manda fotos en jpeg se pone rojo con este fixture, que es el sticker webp de `blueprint/32-multimodal.md` paso 3."
+  },
+  "transcripcion_modelo": "whisper-1"
+}

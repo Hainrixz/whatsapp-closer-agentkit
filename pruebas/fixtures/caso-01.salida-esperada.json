@@ -1,0 +1,75 @@
+{
+  "version": "1",
+  "estado": "parcial",
+  "contacto": {
+    "numero": "5215500000000",
+    "id": "bsu_01HZK3M9QX7T2VW4",
+    "nuevo": true,
+    "mensajes_previos": 0
+  },
+  "calificacion": {
+    "score": 62,
+    "temperatura": "tibio",
+    "intencion": "precio del curso",
+    "presupuesto": null,
+    "urgencia": "media",
+    "motivo": "Preguntó precio y puso una objeción que está en el playbook."
+  },
+  "respuesta": {
+    "texto": "El curso sale 12000 MXN y se puede en tres partes. ¿Te va alguno de estos horarios?",
+    "enviado": false,
+    "objecion_detectada": "Está caro",
+    "objecion_en_playbook": true,
+    "horarios_ofrecidos": [
+      "2026-03-02T11:00:00-06:00",
+      "2026-03-02T17:00:00-06:00",
+      "2026-03-03T10:00:00-06:00"
+    ],
+    "ventana_abierta": null
+  },
+  "cita": null,
+  "crm": {
+    "etapa": "calificado",
+    "resumen": "Preguntó el precio del curso de bienes raíces.\nSe le respondió la objeción de precio y se le ofrecieron tres horarios.\nFalta que elija uno.",
+    "proximo_paso": "Confirmar horario",
+    "proximo_paso_fecha": "2026-03-03",
+    "escrito": false
+  },
+  "handoff": null,
+  "pasos": [
+    {
+      "n": 1,
+      "estado": "hecho",
+      "motivo": null
+    },
+    {
+      "n": 2,
+      "estado": "hecho",
+      "motivo": null
+    },
+    {
+      "n": 3,
+      "estado": "sin-confirmar",
+      "motivo": "modo borrador: falta confirmación"
+    },
+    {
+      "n": 4,
+      "estado": "sin-confirmar",
+      "motivo": "no hay horario elegido"
+    },
+    {
+      "n": 5,
+      "estado": "sin-confirmar",
+      "motivo": "modo borrador: falta confirmación"
+    },
+    {
+      "n": 6,
+      "estado": "salteado",
+      "motivo": "no hay motivo de escalación"
+    }
+  ],
+  "pregunta": null,
+  "supuestos": [
+    "S03"
+  ]
+}

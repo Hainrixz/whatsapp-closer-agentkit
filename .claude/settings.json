@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Bash(python3 ${CLAUDE_PROJECT_DIR}/scripts/auditar.py:*)",
+      "Bash(python3 scripts/auditar.py:*)",
+      "Bash(python3 scripts/verificar_pines.py:*)",
+      "Bash(true)",
+      "Bash(python3 -m venv:*)",
+      "Bash(python3 -m pip install -r requirements.txt:*)",
+      "Bash(python3 -m pytest:*)",
+
+      "Bash(.venv/bin/python:*)",
+      "Bash(.venv/bin/python3:*)",
+      "Bash(.venv/bin/pip:*)",
+      "Bash(.venv/bin/pytest:*)",
+      "Bash(.venv/bin/uvicorn:*)",
+      "Bash(.venv/bin/ruff:*)",
+      "Bash(${CLAUDE_PROJECT_DIR}/.venv/bin/python:*)",
+      "Bash(.venv\\Scripts\\python.exe:*)",
+      "Bash(.venv\\Scripts\\pip.exe:*)",
+      "Bash(.venv\\Scripts\\uvicorn.exe:*)",
+      "Bash(ruff check:*)",
+      "Bash(ruff format:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Read(./blueprint/**)",
+      "Read(./contratos/**)",
+      "Read(./plantillas/**)",
+      "Read(./knowledge/**)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./**/*-service-account*.json)",
+      "Read(./**/*.pem)"
+    ]
+  }
+}

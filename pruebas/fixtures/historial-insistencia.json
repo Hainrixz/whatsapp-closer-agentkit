@@ -1,0 +1,53 @@
+{
+  "version": "1",
+  "caso": "insistencia",
+  "contacto": {
+    "contacto_id": "bsu_9RQ4M2K7XT5N8VW1",
+    "numero": "5215500000004",
+    "nuevo": false
+  },
+  "conversacion": {
+    "conversacion_id": "conv_9RQ4M2K7XT5N8VW1",
+    "contacto_id": "bsu_9RQ4M2K7XT5N8VW1",
+    "last_inbound_at": "2026-03-01T19:40:00-06:00",
+    "window_expires_at": "2026-03-02T19:40:00-06:00",
+    "ultimo_entrante": "Hola, vi el curso de bienes raíces. ¿Me pasás la info?",
+    "ultimo_saliente_hash": "b813af9fc57adca2eb15780bfe2057e1e87a67cc89b5f84684d01d5dae418d81",
+    "salientes_seguidos": 2,
+    "baja_en": null
+  },
+  "mensajes": [
+    {
+      "evento_id": "evt_INS1",
+      "direccion": "entrante",
+      "tipo": "texto",
+      "texto": "Hola, vi el curso de bienes raíces. ¿Me pasás la info?",
+      "recibido_en": "2026-03-01T19:40:00-06:00"
+    },
+    {
+      "evento_id": "evt_INS2",
+      "direccion": "saliente",
+      "tipo": "texto",
+      "texto": "Te paso la info: son cuatro horas por semana y las clases quedan grabadas. ¿Te va alguno de estos horarios?",
+      "recibido_en": "2026-03-01T19:52:00-06:00"
+    },
+    {
+      "evento_id": "evt_INS3",
+      "direccion": "saliente",
+      "tipo": "texto",
+      "texto": "Te escribo por si se te pasó: ¿te sirve alguno de esos horarios?",
+      "recibido_en": "2026-03-02T14:10:00-06:00"
+    }
+  ],
+  "lead": {
+    "contacto_id": "bsu_9RQ4M2K7XT5N8VW1",
+    "numero": "5215500000004",
+    "etapa": "calificado",
+    "score": 47,
+    "temperatura": "tibio",
+    "resumen": "Pidió la info del curso de bienes raíces.\nSe le pasó la modalidad y tres horarios.\nNo contestó ninguno de los dos mensajes que se le mandaron después.",
+    "proximo_paso": "Esperar que conteste",
+    "proximo_paso_fecha": "2026-03-03",
+    "cita_evento_id": null
+  }
+}

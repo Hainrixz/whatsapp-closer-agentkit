@@ -1,50 +1,61 @@
-# Cerrador de WhatsApp
+# Cerrador de WhatsApp · blueprint
 
-Este archivo está en contexto en cada turno. Todo lo que sobra acá se paga siempre, aunque
-nadie lo use. Manténlo corto.
+Este archivo se paga en cada turno y es lo único que vuelve entero después de una
+compactación. Lo que sobra acá sobra siempre.
 
-## Qué es este proyecto
+No construyas de memoria: leé `blueprint/00-mapa.md` y seguí los archivos en orden, uno por
+fase.
 
-Un agente que atiende cada chat entrante de WhatsApp con perfil de setter y closer: califica,
-responde objeciones del playbook, agenda y deja la etapa y el próximo paso escritos en el CRM.
-
-Lo construyó `agent-forge` en modo lote desde la ficha `whatsapp-closer-agent` del catálogo.
-La procedencia está en `forja.json` y las citas en `CITAS.md`.
-
-## El árbol
+## Los seis pasos son el contrato
 
 ```
-whatsapp-closer-agent/
-├── agents/whatsapp-closer-agent.md   el agente
-├── contratos/                         entrada y salida en JSON Schema
-├── pruebas/caso-01.md                 una aserción por paso
-├── env.example                        nombres de variables, nunca valores
-├── README.md                          abre por el problema
-├── CITAS.md                           los identificadores del corpus
-├── SUPUESTOS.md                       los diez supuestos y cómo se corrigen
-├── PENDIENTES.md                      las ocho piezas que faltan
-└── forja.json                         procedencia y estado
+1 · Recibí el mensaje y traé el contexto
+2 · Detectá la intención y calificá
+3 · Respondé con el tono de marca y ofrecé horarios   ← le escribe a una persona
+4 · Agendá y confirmá                                  ← escribe en la agenda
+5 · Escribí en el CRM                                  ← escribe en la base
+6 · Pasá el chat a un humano cuando corresponde
 ```
 
-## Cómo se dispara
+`pasos` trae **seis elementos, siempre**, aunque cinco queden salteados. Es lo que deja ver
+dónde se cortó el ciclo.
 
-Por webhook: un mensaje entrante de la API de WhatsApp Cloud abre un ciclo. También se invoca
-a mano para retomar una conversación desde la etapa escrita en el CRM.
+Los pasos 3, 4 y 5 escriben afuera. El default es `borrador`: redactan, muestran y esperan
+confirmación explícita. Pasar a `automatico` lo decide quien instala, nunca vos.
 
-## Reglas de este proyecto
+La forma exacta está en `contratos/`.
 
-1. Los seis pasos son el contrato. Si sobra o falta uno, va a `SUPUESTOS.md` antes de tocarlo.
-2. Los pasos 3, 4 y 5 escriben afuera. Piden confirmación explícita y no la saltean nunca.
-3. El modo por defecto es `borrador`. Cambiarlo a `automatico` es una decisión de quien
-   instala, no del agente.
-4. Ningún precio, plazo ni promesa que no esté en el catálogo de la entrada.
-5. Ninguna credencial en el árbol. Las nueve variables viven en `.env`, que no va a git.
-6. Una dependencia que no está instalada se declara y se detiene. No se improvisa.
-7. Español neutro con voseo, frases cortas, cero superlativos.
+## Invariantes
 
-## Qué no hay que hacer acá
+1. Las firmas se verifican sobre el **cuerpo crudo**, con `hmac.compare_digest`. Reserializar
+   el JSON para firmarlo pasa todas las pruebas y falla todas las entregas reales.
+2. Ningún mensaje a un contacto sale si no es por `enviar()`: ventana de 24 horas, chequeo
+   de baneo, y nunca escribirle primero a quien no escribió.
+3. Un solo cliente HTTP, con `timeout=` explícito.
+4. Ninguna credencial en el árbol. Los secretos los escribe quien instala, nunca una tool call.
+5. Ningún precio ni plazo que no esté en el catálogo. Ninguna objeción que no esté en el
+   playbook: se nombra y se deja para el humano.
+6. Las versiones y el modelo salen de `PINES.md` y de ningún otro lado.
 
-- No agregar pasos que no estén en la ficha sin registrarlo.
-- No convertir un supuesto en una capacidad del README.
-- No poner el texto de un comentario del corpus en ningún archivo.
-- No marcar nada como listo sin correr `scripts/validar_artefacto.py`.
+Nada queda listo sin `scripts/auditar.py` en verde.
+
+## Los comandos
+
+```
+/armar-cerrador  construye            /probar     simulador de chat
+/seguir          retoma a medias      /revisar    corre la compuerta
+/playbook        estrategia de cierre /bandeja    aprobar borradores
+/conectar        credenciales         /soltar     pasar a automático
+/publicar        desplegar
+/configurar      Q5 a Q9: catálogo, rango de precio, disponibilidad, escalación, canal interno
+```
+
+Viven en `.claude/skills/`, cada uno apunta a su `blueprint/`.
+
+## Registro
+
+Voseo con quien instala. Frases cortas, cero jerga, cero superlativos. Si algo no se puede
+hacer, decilo con el motivo en vez de rodearlo.
+
+El agente le habla a los clientes con el tratamiento elegido en la entrevista — `tú`, `vos` o
+`usted` — que no tiene por qué ser el tuyo.

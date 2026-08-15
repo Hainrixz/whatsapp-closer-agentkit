@@ -1,0 +1,5 @@
+{
+  "secreto": "prueba-secreto-no-usar-en-produccion",
+  "cabecera": "X-Zernio-Signature",
+  "firma": "6fca8b44041304ec066188c0247452c0c89e61748a2f681543e50dc2ea7f716e"
+}

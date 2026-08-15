@@ -1,0 +1,36 @@
+{
+  "object" : "whatsapp_business_account",
+    "entry": [
+    {
+          "id": "102290129340398",
+      "changes": [ {
+
+        "value": {
+             "messaging_product":"whatsapp",
+          "metadata": {
+            "display_phone_number" : "15550783881",
+              "phone_number_id": "106540352242922"
+          },
+          "contacts": [
+            {
+              "profile": { "name": "Mar\u00eda Fern\u00e1ndez" },
+                "wa_id": "5215500000000"
+            }
+          ],   
+             "messages": [
+            {
+              "from": "5215500000000",
+              "id": "wamid.HBgNNTIxNTUwMDAwMDAwMBUCABIYFDNBMEE5RjVEQjc4QzQ2NEE5RDgy",
+                "timestamp": "1772430060",
+              "text": {
+                "body": "Hola, vi el curso de bienes raíces. ¿Cuánto sale? Me interesa pero se me hace caro."
+              },
+              "type": "text"
+            }
+          ]
+        },
+	"field": "messages"
+      } ]
+    }
+  ]
+}

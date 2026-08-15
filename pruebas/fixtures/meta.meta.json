@@ -1,0 +1,5 @@
+{
+  "secreto": "prueba-secreto-no-usar-en-produccion",
+  "cabecera": "X-Hub-Signature-256",
+  "firma": "sha256=eae23634cc425366e82c0ec3425cf5e5dea8ffd07630c7942b170e685e6fa4e0"
+}

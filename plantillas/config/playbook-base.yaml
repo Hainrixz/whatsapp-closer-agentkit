@@ -1,0 +1,172 @@
+# Playbook base · el cerrador que trae el kit
+#
+# Lo usa quien eligió `base` en Q4 y no tiene metodología propia. `blueprint/25-playbook.md`
+# paso 1 lo copia con `cp` a `config/playbook-base.yaml`, y ese `cp` va en los tres caminos, no
+# sólo en el A. Por el camino A el paso 2 abre esa copia, la transpone al tratamiento de Q3
+# —`tú`, `vos` o `usted`— y la muestra entera en pantalla esperando el "va"; el paso 7 escribe lo
+# aprobado en `config/playbook.yaml`. Acá está en voseo porque es el registro del kit; el cliente
+# lee el tratamiento de Q3, que no tiene por qué ser el mismo.
+#
+# El destino declarado en `plantillas/MANIFIESTO.json` es `config/playbook-base.yaml`, y esa copia
+# queda como quedó: el paso 1 de `blueprint/30-generacion.md` la compara byte por byte contra esta
+# plantilla. Lo que se edita después de la entrevista es `config/playbook.yaml`. La copia tampoco
+# se versiona: `.gitignore` la deja afuera con `/config/playbook-base.yaml`, anclado, porque esta
+# plantilla ya está en el repo y dos veces el mismo contenido es un diff que engaña.
+#
+# No confundir con `config/cerrador.yaml`, que empieza parecido y no tiene nada que ver: ése lo
+# escribe `blueprint/60-bandeja.md` paso 1, y son los tres modos y los cinco pisos de `/soltar`.
+#
+# Sirve igual para quien vende un curso, para una clínica y para una inmobiliaria, y esa es la
+# condición que manda: ninguna de las ocho respuestas afirma un hecho del negocio. Donde hace
+# falta un hecho hay un hueco:
+#
+#   {producto}    el ítem del catálogo del que se está hablando (Q5)
+#   {precio}      su precio con la moneda, tal como está en el catálogo (Q5)
+#   {negocio}     el nombre del negocio (Q1)
+#   {horario_1}   la ventana de `franjas` de `config/agenda.yaml` (Q7) dicha en palabras —«un
+#                 horario entre las 10 y las 13»—, y nunca una fecha: una fecha concreta acá
+#                 envejece en cinco días hábiles y el paso 3 termina ofreciendo un horario que
+#                 no está en `disponibilidad`. El procedimiento es el paso 8 de
+#                 `blueprint/25-playbook.md`
+#
+# Cuando corre el paso 2 la entrevista viene de Q3: `{negocio}` ya está contestado y se llena ahí
+# mismo; Q5 y Q7 son del tramo 2 y todavía no. Un hueco sin respuesta viaja como hueco hasta
+# `config/playbook.yaml` y se llena corriendo `/playbook` al terminar el tramo 2. El paso 2 dice
+# cuáles quedan abiertos; ninguno se inventa.
+#
+# Las llaves van simples a propósito. El placeholder del kit es el de llave doble y mayúsculas, y
+# uno sin declarar en `scripts/hash_plantillas.py` frena el manifiesto —escribir uno acá, aunque
+# sea para nombrarlo, ya lo frena—. Este archivo se copia literal y los huecos los llena el wizard.
+#
+# Una objeción que no esté en esta lista, el agente la nombra y la deja para una persona.
+
+playbook:
+
+  tono: |
+    Dos o tres líneas por mensaje, como escribe una persona en un chat y no como un folleto.
+    Pregunta antes de afirmar, una pregunta por mensaje, y usa el nombre del contacto una vez al
+    principio y no lo repite. Cierra con una pregunta o con horarios, sin admiraciones ni emojis.
+
+  # El `>` junta los renglones y deja un salto sólo donde hay una línea en blanco: lo que le llega
+  # al contacto son las dos o tres líneas de cada respuesta, no el ancho de este archivo.
+  objeciones:
+
+    - objecion: "Está caro / No me alcanza"
+      respuesta: >
+        Puede ser. Prefiero que me lo digas ahora y no dentro de un mes.
+
+        ¿Contra qué lo estás comparando, contra otra opción o contra lo que tenías pensado
+        gastar?
+
+    - objecion: "Lo tengo que pensar / Después te aviso"
+      respuesta: >
+        Está bien, pensalo. Prefiero eso a que me contestes apurado.
+
+        Para no escribirte cada tres días, ¿qué día te viene bien que retomemos?
+
+    - objecion: "No tengo tiempo"
+      respuesta: >
+        Te entiendo, y es la razón por la que pregunto antes de proponerte nada.
+
+        ¿Cuánto tiempo por semana tendrías para {producto}?
+
+    - objecion: "Lo tengo que consultar con mi socio o mi pareja"
+      respuesta: >
+        Me parece bien que lo vean los dos, y no te voy a apurar.
+
+        Te lo puedo dejar por escrito en cuatro renglones para que se lo pases tal cual.
+
+        ¿Qué es lo primero que te va a preguntar?
+
+    - objecion: "Ya probé algo parecido y no funcionó"
+      respuesta: >
+        Entonces eso es lo primero que necesito saber, así no te repito lo mismo.
+
+        ¿Qué fue lo que falló ahí, cómo estaba armado, el acompañamiento o el momento?
+
+    - objecion: "Mandame información"
+      respuesta: >
+        Te la mando, y prefiero mandarte lo que te sirve y no un folleto entero.
+
+        ¿Qué necesitás saber para tomar la decisión?
+
+    # Las dos que siguen son la regla de no inventar convertida en copy de ventas. En vez de una
+    # negativa robótica, una derivación con horario: el descuento y la garantía son condiciones
+    # comerciales que firma una persona, y el agente que las promete se las hace pagar al negocio.
+
+    - objecion: "¿Me hacés un descuento?"
+      respuesta: >
+        El precio de lista de {producto} es {precio}, y eso es lo que te puedo confirmar yo.
+
+        Los descuentos los define una persona de {negocio} y no te los voy a prometer por acá.
+
+        Le puedo pasar tu caso hoy mismo, ¿te queda bien {horario_1}?
+
+    - objecion: "¿Y si no me funciona? / ¿Tienen garantía?"
+      respuesta: >
+        Es la pregunta correcta, y no te la voy a contestar de memoria.
+
+        Las condiciones las confirma una persona de {negocio}, con lo que esté por escrito.
+
+        ¿Te agendo con esa persona en {horario_1}?
+
+# La rúbrica del paso 2. Va afuera de `playbook:`, al mismo nivel: el fragmento `playbook` de
+# `contratos/entrada.schema.json` es `additionalProperties: false` y una clave de más lo rebota.
+rubrica:
+
+  presupuesto:
+    puntos: 40
+    senales:
+      - "40 · dice un monto o un rango, y cae adentro de `rango_precio`"
+      - "25 · pregunta por pagos en partes o por formas de pago"
+      - "20 · dice que ya pagó algo parecido antes, sin decir cuánto"
+      - "10 · dice un monto abajo del mínimo de `rango_precio`. El paso 6 mira si escala"
+    nulo: |
+      Si no lo dijeron y no se deduce del mensaje, el campo `presupuesto` de la salida va nulo y
+      este factor no entra. El score se calcula sobre los 60 puntos que quedan y se lleva a
+      escala de 100: score = redondeo(crudo / 60 * 100). Inventar el número es fallo aunque el
+      score quede razonable, y es lo que mide la aserción 2 de `pruebas/caso-01.md`.
+    evidencia: |
+      Para poner un monto hay que citar una subcadena literal del mensaje. El código la busca
+      adentro del mensaje recibido: si no está, fuerza `presupuesto` a nulo y aplica la regla de
+      arriba. Ojo con los dos nombres: el campo `presupuesto` de la salida es el monto, y estos
+      40 son los puntos que ese factor aporta al score.
+
+  urgencia:
+    puntos: 30
+    senales:
+      - "30 · nombra una fecha o un plazo suyo: «este mes», «antes de que empiece»"
+      - "25 · pide un horario antes de que se lo ofrezcan"
+      - "15 · dice que lo está viendo o comparando, sin plazo"
+      - "5 · dice «más adelante» o «el año que viene»"
+
+  encaje:
+    puntos: 30
+    senales:
+      - "30 · nombra un ítem del catálogo y para qué lo quiere"
+      - "20 · describe un problema que el catálogo resuelve, sin nombrar el ítem"
+      - "10 · pregunta por algo del mismo rubro que no está en el catálogo"
+      - "0 · pide algo que no se vende. El paso 3 lo dice y no lo improvisa"
+
+  score: |
+    Los tres factores suman 100 con presupuesto adentro y 60 cuando va nulo. En ese caso se
+    reescala, no se rellena. Urgencia y encaje siempre se leen del mensaje: cuando el mensaje no
+    alcanza, van al piso del factor y el motivo lo dice. El corte de temperatura lo decide el
+    código con `umbrales` de la entrada, y acá no se repite ese número: uno repetido en dos
+    archivos algún día dice dos cosas distintas.
+
+  motivo: |
+    Una línea, con lo que se leyó en el mensaje y no con una conclusión. «Pidió horario y nombró
+    el producto, no dijo presupuesto» sirve. «Lead calificado» no dice nada.
+
+# ── Una decisión, no un descuido ──────────────────────────────────────────────────────────────
+#
+# Este base está escrito consultivo y directo: pregunta antes de argumentar, no presiona y deriva
+# rápido cuando el dato no es suyo. La otra escuela —urgencia y escasez, «quedan dos lugares»,
+# «el precio sube el lunes»— cierra más rápido en la primera conversación, y por WhatsApp deja
+# dos cosas: la promesa que después alguien tiene que sostener, y el reporte de spam que se lleva
+# puesto el número entero.
+#
+# Si tu forma de vender es la otra, cambiá las ocho respuestas: el archivo es tuyo. Lo que no
+# cambia es la regla de arriba, ningún hecho del negocio sin hueco o sin derivar, porque de eso
+# depende que el agente no prometa un descuento que vas a terminar pagando vos.

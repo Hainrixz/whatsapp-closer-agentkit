@@ -68,9 +68,6 @@ El score va de 0 a 100. Caliente desde 70, tibio entre 40 y 69, frío abajo de 4
 inventes el presupuesto: si no lo dijeron y no se deduce, va en nulo y el score se calcula
 sin ese factor.
 
-<!-- TODO(humano) S03: los tres umbrales del score no salen de la ficha. Se cambian en
-     `umbrales` de la entrada. Ver SUPUESTOS.md -->
-
 **Terminaste cuando** hay intención nombrada, score con número y motivo en una línea.
 
 ### Paso 3 · Respondé con el tono de marca y ofrecé horarios
@@ -78,9 +75,6 @@ sin ese factor.
 **Este paso le escribe a una persona.** El modo por defecto es `borrador`: redactás la
 respuesta, la mostrás y esperás una confirmación explícita. Si te llaman sin confirmar y sin
 el modo en `automatico`, no mandes nada y salí con el motivo.
-
-<!-- TODO(humano) S01: el default es `borrador`. La ficha marca este paso como destructivo
-     pero no dice si contesta sola. Se cambia en `modo` de la entrada. Ver SUPUESTOS.md -->
 
 Usá `conversational-sales-copy` para el tono. Buscá la objeción del contacto en el playbook
 que te pasaron y respondé esa, no las cinco. Si la objeción no está en el playbook, decilo
@@ -102,10 +96,6 @@ confirmación. Sin confirmación no se crea nada.
 Creá el evento en Google Calendar con `chat-scheduler-tool`. Mandá la confirmación por
 WhatsApp y dejá programado el recordatorio 24 horas antes.
 
-<!-- TODO(humano) S05: la cuenta de servicio no puede invitar a nadie sin delegación de
-     dominio, así que la confirmación sale por WhatsApp y no por invitación de calendario.
-     Ver SUPUESTOS.md -->
-
 Si el horario se ocupó entre que lo ofreciste y lo confirmaron, no lo pises: volvé a
 ofrecer tres y decilo con esas palabras.
 
@@ -119,9 +109,6 @@ confirmación.
 Guardá etapa, resumen de la conversación y próximo paso con fecha. Las etapas son `nuevo`,
 `calificado`, `agendado`, `cerrado`, `perdido` y `escalado`.
 
-<!-- TODO(humano) S06: la ficha dice «el CRM» sin nombrarlo. El default es una tabla
-     `leads` en Supabase con esas columnas. Ver SUPUESTOS.md -->
-
 El resumen es de tres líneas: qué quería, qué le respondiste, qué falta. No pegues la
 conversación entera.
 
@@ -131,9 +118,6 @@ conversación entera.
 
 Tres disparadores: enojo, precio fuera del rango que te dieron, o una palabra de la lista
 de escalación.
-
-<!-- TODO(humano) S08: la lista por defecto es humano, persona real, reclamo, abogado,
-     estafa y cancelar. Se cambia en `palabras_escalacion`. Ver SUPUESTOS.md -->
 
 Cuando se dispara, dejá de responder. Decile al contacto que lo sigue una persona, escribí
 el motivo en el CRM con etapa `escalado` y avisá por el canal interno con el número, el

@@ -1,0 +1,34 @@
+{
+  "version": "1",
+  "mensaje": {
+    "de": "5215500000000",
+    "contacto_id": "bsu_01HZK3M9QX7T2VW4",
+    "tipo": "texto",
+    "texto": "Hola, vi el curso de bienes raíces. ¿Cuánto sale? Me interesa pero se me hace caro y no sé si tengo tiempo.",
+    "media_id": null,
+    "media_url": null,
+    "media_local": null,
+    "recibido_en": "2026-03-02T03:41:00-06:00"
+  },
+  "modo": "borrador",
+  "confirmado": false,
+  "playbook": {
+    "tono": "Directo, de tú a tú, sin promesas de resultado.",
+    "objeciones": [
+      { "objecion": "Está caro", "respuesta": "Se compara contra lo que cuesta una operación mal cerrada, y hay pago en tres partes." },
+      { "objecion": "No tengo tiempo", "respuesta": "Son cuatro horas por semana y las clases quedan grabadas." },
+      { "objecion": "Lo tengo que consultar", "respuesta": "Te dejo el resumen de una página para que lo muestres." },
+      { "objecion": "Ya intenté algo parecido", "respuesta": "Preguntá qué le faltó a eso antes de contestar." },
+      { "objecion": "Después te aviso", "respuesta": "Ofrecé una fecha concreta para retomar, no un «cuando puedas»." }
+    ]
+  },
+  "catalogo": [{ "nombre": "Curso de bienes raíces", "precio": 12000, "moneda": "MXN" }],
+  "rango_precio": { "minimo": 8000, "maximo": 40000 },
+  "disponibilidad": [
+    { "inicio": "2026-03-02T11:00:00-06:00", "duracion_min": 30 },
+    { "inicio": "2026-03-02T17:00:00-06:00", "duracion_min": 30 },
+    { "inicio": "2026-03-03T10:00:00-06:00", "duracion_min": 30 },
+    { "inicio": "2026-03-04T16:00:00-06:00", "duracion_min": 30 }
+  ],
+  "canal_interno": "#ventas-escalaciones"
+}

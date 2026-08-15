@@ -1,0 +1,44 @@
+name: Un paso del blueprint está mal escrito
+description: El paso es ambiguo, le falta el «Si falla», o dice hacer algo que ya no aplica.
+labels: ["blueprint"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Esto es para cuando el kit **no está roto pero está mal contado**: un paso que se
+        puede leer de dos maneras, un «Tenés que ver» que no dice lo suficiente, un
+        comando que en tu sistema se escribe distinto.
+
+        Si el paso directamente no anda, la otra plantilla es la que va.
+
+  - type: input
+    id: archivo
+    attributes:
+      label: El archivo y el paso
+      placeholder: "blueprint/33-agenda.md, paso 6"
+    validations:
+      required: true
+
+  - type: textarea
+    id: dice
+    attributes:
+      label: Qué dice hoy
+      description: Pegá el renglón o el bloque, tal cual está.
+    validations:
+      required: true
+
+  - type: textarea
+    id: problema
+    attributes:
+      label: Qué se entiende mal
+      description: |
+        Si podés, decí cómo lo leíste vos y qué hiciste por leerlo así. Eso es lo que
+        hace falta para arreglarlo bien.
+    validations:
+      required: true
+
+  - type: textarea
+    id: propuesta
+    attributes:
+      label: Cómo lo escribirías
+      description: Opcional, y bienvenido.

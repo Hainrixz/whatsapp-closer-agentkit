@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "algoritmo": "sha256",
+  "plantillas": [
+    {
+      "ruta": "plantillas/config/playbook-base.yaml",
+      "sha256": "980a8d38a6d8bea7a61279ab0f56d3ef6fd89c5c46567f38f2d957eaed15e804",
+      "bytes": 9263,
+      "destino": "config/playbook-base.yaml",
+      "placeholders": []
+    },
+    {
+      "ruta": "plantillas/contratos/wire_schema.golden.json",
+      "sha256": "be76f18048027dc0e1287eb641df2188ba04d632790324eded7733810a3f9694",
+      "bytes": 4038,
+      "destino": "agente/wire_schema.golden.json",
+      "placeholders": []
+    },
+    {
+      "ruta": "plantillas/contratos/wire_schema.py",
+      "sha256": "8a98b91cc68a0048ca8c794a7b286233484bb69c38549e913890467f4d732ed6",
+      "bytes": 16544,
+      "destino": "agente/wire_schema.py",
+      "placeholders": []
+    },
+    {
+      "ruta": "plantillas/infra/Dockerfile",
+      "sha256": "6dec9f1036c4219d514571600f5f5ad362ec1f0c0c34304d4ac5aec7e63d4665",
+      "bytes": 1857,
+      "destino": "Dockerfile",
+      "placeholders": []
+    },
+    {
+      "ruta": "plantillas/infra/railway.json",
+      "sha256": "85dda219a84d6dec91a66c48ddfd24243ab2fcefadcb36cea31ebcafb59e0333",
+      "bytes": 319,
+      "destino": "railway.json",
+      "placeholders": []
+    },
+    {
+      "ruta": "plantillas/infra/requirements.txt",
+      "sha256": "6dc6040549b4f329315a5f09705ea77ba6ea68dd900c458130bbd05247f241f0",
+      "bytes": 2276,
+      "destino": "requirements.txt",
+      "placeholders": []
+    },
+    {
+      "ruta": "plantillas/seguridad/firmas.py",
+      "sha256": "1b34ce44b6b87aa3d33950b411498d681232acbbfd3781a9c1ab8b8c08a83538",
+      "bytes": 12155,
+      "destino": "agente/firmas.py",
+      "placeholders": []
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "version": "1",
+  "caso": "caso-02b",
+  "contacto": {
+    "contacto_id": "bsu_02BZK3M9QX7T2VW4",
+    "numero": null,
+    "nuevo": false
+  },
+  "conversacion": {
+    "conversacion_id": "conv_02BZK3M9QX7T2VW4",
+    "contacto_id": "bsu_02BZK3M9QX7T2VW4",
+    "last_inbound_at": "2026-03-01T22:14:00-06:00",
+    "window_expires_at": "2026-03-02T22:14:00-06:00",
+    "ultimo_entrante": "Somos el área comercial entera y queremos algo a medida.",
+    "ultimo_saliente_hash": "6aca7fb13e07e34cb3a9e572e14f0489eb179161b105f9b4aa7279f804789f9f",
+    "salientes_seguidos": 0,
+    "baja_en": null
+  },
+  "mensajes": [
+    {
+      "evento_id": "evt_02B1",
+      "direccion": "entrante",
+      "tipo": "texto",
+      "texto": "Buen día, ¿tienen algo para capacitar a todo un equipo?",
+      "recibido_en": "2026-03-01T19:40:00-06:00"
+    },
+    {
+      "evento_id": "evt_02B2",
+      "direccion": "saliente",
+      "tipo": "texto",
+      "texto": "Tenemos el curso de bienes raíces a 12000 MXN por persona. ¿Cuántos serían?",
+      "recibido_en": "2026-03-01T19:52:00-06:00"
+    },
+    {
+      "evento_id": "evt_02B3",
+      "direccion": "entrante",
+      "tipo": "texto",
+      "texto": "Somos el área comercial entera y queremos algo a medida.",
+      "recibido_en": "2026-03-01T22:14:00-06:00"
+    }
+  ],
+  "lead": {
+    "contacto_id": "bsu_02BZK3M9QX7T2VW4",
+    "numero": null,
+    "etapa": "calificado",
+    "score": 64,
+    "temperatura": "tibio",
+    "resumen": "Pidió una capacitación para un equipo entero.\nSe le pasó el precio por persona del catálogo.\nFalta saber cuántas personas y con qué presupuesto.",
+    "proximo_paso": "Responder la objeción y ofrecer horario",
+    "proximo_paso_fecha": "2026-03-02",
+    "cita_evento_id": null
+  }
+}

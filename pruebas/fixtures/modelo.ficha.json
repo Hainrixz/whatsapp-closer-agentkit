@@ -1,0 +1,33 @@
+{
+  "modelo": "claude-opus-5",
+  "endpoint": "/v1/messages",
+  "salida": {
+    "intencion": "precio del curso",
+    "score": 62,
+    "presupuesto": null,
+    "presupuesto_evidencia": null,
+    "urgencia": "media",
+    "motivo": "Preguntó precio y puso una objeción que está en el playbook.",
+    "texto": "El curso sale 12000 MXN y se puede en tres partes. ¿Te va alguno de estos horarios?",
+    "objecion_detectada": "Está caro",
+    "resumen": "Preguntó el precio del curso de bienes raíces.\nSe le respondió la objeción de precio y se le ofrecieron tres horarios.\nFalta que elija uno.",
+    "proximo_paso": "Confirmar horario",
+    "proximo_paso_fecha": "2026-03-03"
+  },
+  "respuestas": {
+    "tool_use": {
+      "archivo": "modelo.tool-use.respuesta.json",
+      "stop_reason": "tool_use",
+      "bloques": ["thinking", "text", "tool_use"],
+      "herramienta": "salida_wire",
+      "donde_vive_la_salida": "content[2].input"
+    },
+    "salida_estructurada": {
+      "archivo": "modelo.salida-estructurada.respuesta.json",
+      "stop_reason": "end_turn",
+      "bloques": ["thinking", "text"],
+      "donde_vive_la_salida": "json.loads(content[1].text)"
+    }
+  },
+  "procedencia": "transcrita de la forma vigente de la API de Anthropic, no capturada de una entrega real: para escribirla no se hizo ninguna llamada y no se usó ninguna credencial. Pincha una extracción mal escrita, no puede delatar que la API haya cambiado de forma. Los tres archivos no llevan `.raw` a propósito: en pruebas/fixtures/ ese sufijo es el cuerpo crudo de una entrega firmada, y acá no hay ninguna firma que verificar."
+}

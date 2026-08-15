@@ -14,36 +14,57 @@
     "mensaje": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["de", "tipo"],
-      "description": "Lo que llegó por el webhook de la API de WhatsApp Cloud, ya desenvuelto.",
+      "required": ["tipo"],
+      "anyOf": [
+        { "required": ["de"] },
+        { "required": ["contacto_id"] }
+      ],
+      "description": "Lo que llegó por el webhook, ya desenvuelto, más las dos cosas que el paso 1 resuelve y deja escritas acá: `media_local` y `horario_elegido`. Tiene que traer `de` o `contacto_id`; con ninguno de los dos no hay a quién contestarle.",
       "properties": {
         "de": {
-          "type": "string",
-          "description": "Número del contacto en formato internacional, sin espacios ni signos."
+          "type": ["string", "null"],
+          "description": "Número del contacto en formato internacional, sin espacios ni signos. Puede venir nulo: desde abril de 2026 alguien con nombre de usuario de WhatsApp le escribe a un negocio sin exponer su teléfono. Ahí la identidad es `contacto_id`."
+        },
+        "contacto_id": {
+          "type": ["string", "null"],
+          "description": "Identificador estable del contacto para este negocio, el `businessScopedUserId`. Es el ancla de identidad: el número puede faltar o cambiar, esto no. Todo lo que se guarda se indexa por acá."
         },
         "tipo": {
           "enum": ["texto", "audio", "imagen"],
-          "description": "Los tres que la ficha declara. El audio se transcribe en el paso 1 y la imagen se describe."
+          "description": "El audio se transcribe en el paso 1 y la imagen se describe. Sin la credencial que hace falta, el ciclo se detiene con el motivo en vez de adivinar el contenido."
         },
         "texto": {
           "type": ["string", "null"],
           "description": "Nulo cuando el tipo es audio o imagen y todavía no se transcribió."
         },
+        "media_id": {
+          "type": ["string", "null"],
+          "description": "Identificador del medio en el proveedor. Se baja con la credencial puesta —no es un enlace público— y se baja al recibirlo: cuando Meta lo suelta, no se recupera más. Nunca se le pasa a una API de visión: sin cabecera devuelve 401."
+        },
         "media_url": {
           "type": ["string", "null"],
-          "description": "Enlace temporal al audio o a la imagen. Caduca: si vino nulo, no se puede recuperar después."
+          "description": "Enlace temporal, cuando el proveedor da uno. Caduca. Zernio no da ninguno y en ese caso viene nulo: la vía es `media_id`."
+        },
+        "media_local": {
+          "type": ["string", "null"],
+          "description": "Ruta del archivo ya bajado. La escribe el paso 1 después de traerlo. Nula mientras no se haya bajado, y si la bajada falló el paso queda `fallado` con el motivo."
         },
         "recibido_en": {
           "type": ["string", "null"],
           "format": "date-time",
-          "description": "Momento del mensaje. Sirve para saber si la ventana de 24 horas de WhatsApp sigue abierta."
+          "description": "Cuándo llegó el mensaje. Es el extremo desde el que se cuenta la ventana de 24 horas —cierra 24 horas después de esto— y no es «ahora»: contra qué instante se compara lo decide el reloj del ciclo, que es el de la máquina y se lee una sola vez al empezar. Ver blueprint/40-pruebas.md paso 2. Los dos son distintos cuando el ciclo se retoma a mano desde la etapa del CRM, o cuando el proveedor entrega tarde: ahí la ventana puede estar cerrada aunque este campo diga otra cosa, y pasada esa ventana WhatsApp solo deja mandar plantillas aprobadas."
+        },
+        "horario_elegido": {
+          "type": ["string", "null"],
+          "format": "date-time",
+          "description": "El horario que el contacto aceptó, escrito igual que el `inicio` de `disponibilidad` del que salió. Nulo mientras nadie eligió, que es lo normal en el primer mensaje. Lo escribe el paso 1 después de leer el mensaje, igual que `media_local`: cruza la respuesta del contacto contra los horarios que el turno anterior ofreció, y no interpreta fechas sueltas. También lo escribe la bandeja cuando quien opera elige uno y aprueba el borrador del paso 4. Sin esto el paso 4 no tiene qué agendar y queda `sin-confirmar` con el motivo «no hay horario elegido»; con un valor que no esté en `disponibilidad`, queda `fallado` y tampoco agenda. Es el segundo requisito del paso 4 y no reemplaza al primero: la confirmación explícita sigue siendo obligatoria. Ver `blueprint/33-agenda.md` paso 3."
         }
       }
     },
     "modo": {
       "enum": ["borrador", "automatico"],
       "default": "borrador",
-      "description": "TODO(humano) S01: en `borrador` los pasos 3, 4 y 5 muestran lo que van a hacer y esperan confirmación. La ficha marca esos pasos como destructivos pero no dice si el agente contesta solo. Ver SUPUESTOS.md"
+      "description": "En `borrador` los pasos 3, 4 y 5 muestran lo que van a hacer y esperan confirmación explícita. Es el default y lo cambia quien instala, nunca el agente. Ver S01 en SUPUESTOS.md"
     },
     "confirmado": {
       "type": "boolean",
@@ -54,7 +75,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["objeciones"],
-      "description": "TODO(humano) S02: la ficha nombra «las 5 objeciones típicas» y no las lista. Van acá, escritas por quien vende. Ver SUPUESTOS.md",
+      "description": "La estrategia de cierre. Lo escribe quien vende, o lo saca el kit del documento que subiste, o sale de la entrevista. Es lo que separa este agente de un bot de menú. Ver S02 en SUPUESTOS.md",
       "properties": {
         "objeciones": {
           "type": "array",
@@ -101,7 +122,7 @@
     },
     "disponibilidad": {
       "type": "array",
-      "description": "Horarios libres reales. El paso 3 ofrece tres de acá y ninguno inventado.",
+      "description": "Horarios libres reales. El paso 3 ofrece tres de acá y ninguno inventado, y el paso 4 agenda el de `mensaje.horario_elegido`, que tiene que ser uno de éstos. La duración de la cita sale del `duracion_min` del que se eligió.",
       "items": {
         "type": "object",
         "additionalProperties": false,
@@ -117,12 +138,12 @@
       "minimum": 1,
       "maximum": 5,
       "default": 3,
-      "description": "TODO(humano) S04: cuántos horarios ofrece el paso 3, dentro de los próximos 5 días hábiles. El número no sale de la ficha. Ver SUPUESTOS.md"
+      "description": "Cuántos horarios ofrece el paso 3, dentro de los próximos 5 días hábiles. Salen de `disponibilidad` y de ningún otro lado. Ver S04 en SUPUESTOS.md"
     },
     "umbrales": {
       "type": "object",
       "additionalProperties": false,
-      "description": "TODO(humano) S03: los cortes del score. La ficha pide calificar y no dice con qué escala. Ver SUPUESTOS.md",
+      "description": "Los cortes del score de 0 a 100: caliente desde `caliente`, tibio desde `tibio`, frío abajo. Ver S03 en SUPUESTOS.md",
       "properties": {
         "caliente": { "type": "integer", "default": 70 },
         "tibio": { "type": "integer", "default": 40 }
@@ -132,7 +153,7 @@
       "type": "array",
       "items": { "type": "string" },
       "default": ["humano", "persona real", "reclamo", "abogado", "estafa", "cancelar"],
-      "description": "TODO(humano) S08: la lista por defecto la puso la forja. La ficha dice «palabra clave de escalación» sin enumerarlas. Ver SUPUESTOS.md"
+      "description": "Cualquiera de estas en el mensaje dispara el paso 6. La lista de arriba es el default; se reemplaza con la tuya. Ver S08 en SUPUESTOS.md"
     },
     "canal_interno": {
       "type": ["string", "null"],

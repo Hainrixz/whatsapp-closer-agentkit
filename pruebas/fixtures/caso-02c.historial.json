@@ -1,0 +1,53 @@
+{
+  "version": "1",
+  "caso": "caso-02c",
+  "contacto": {
+    "contacto_id": "bsu_02CZK3M9QX7T2VW4",
+    "numero": "5215500000003",
+    "nuevo": false
+  },
+  "conversacion": {
+    "conversacion_id": "conv_02CZK3M9QX7T2VW4",
+    "contacto_id": "bsu_02CZK3M9QX7T2VW4",
+    "last_inbound_at": "2026-03-01T22:14:00-06:00",
+    "window_expires_at": "2026-03-02T22:14:00-06:00",
+    "ultimo_entrante": "Tengo dudas que no me quedan claras por acá.",
+    "ultimo_saliente_hash": "e2f13a1679dc966e7762389e59cfff62f12c67dd6145ac7c7c9989203c0ba3c4",
+    "salientes_seguidos": 0,
+    "baja_en": null
+  },
+  "mensajes": [
+    {
+      "evento_id": "evt_02C1",
+      "direccion": "entrante",
+      "tipo": "texto",
+      "texto": "Hola, me pasaron el curso de bienes raíces. ¿Cómo es la modalidad?",
+      "recibido_en": "2026-03-01T19:40:00-06:00"
+    },
+    {
+      "evento_id": "evt_02C2",
+      "direccion": "saliente",
+      "tipo": "texto",
+      "texto": "Son cuatro horas por semana y las clases quedan grabadas. ¿Te va alguno de estos horarios?",
+      "recibido_en": "2026-03-01T19:52:00-06:00"
+    },
+    {
+      "evento_id": "evt_02C3",
+      "direccion": "entrante",
+      "tipo": "texto",
+      "texto": "Tengo dudas que no me quedan claras por acá.",
+      "recibido_en": "2026-03-01T22:14:00-06:00"
+    }
+  ],
+  "lead": {
+    "contacto_id": "bsu_02CZK3M9QX7T2VW4",
+    "numero": "5215500000003",
+    "etapa": "calificado",
+    "score": 51,
+    "temperatura": "tibio",
+    "resumen": "Preguntó por la modalidad del curso de bienes raíces.\nSe le respondió con la objeción de tiempo del playbook.\nFalta despejar dudas que no se resuelven por chat.",
+    "proximo_paso": "Responder la objeción y ofrecer horario",
+    "proximo_paso_fecha": "2026-03-02",
+    "cita_evento_id": null
+  }
+}
