@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Idempotencia, que son dos trabajos distintos y se prueban por separado.
 
 **A la entrada, el dedupe.** El proveedor entrega al-menos-una-vez: el mensaje llega, y puede

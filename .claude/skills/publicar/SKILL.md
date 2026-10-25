@@ -3,6 +3,7 @@ name: publicar
 description: Despliega local o en Railway y da de alta el webhook contra el proveedor que elegiste.
 disable-model-invocation: true
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-ac7bc61a -->
 
 # Publicar
 

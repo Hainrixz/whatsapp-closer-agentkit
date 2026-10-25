@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """La única llamada real al modelo, mirada contra bytes grabados. Sin credencial y sin red.
 
 El defecto que este archivo existe para hacer fallar no es una línea mal escrita: es una orilla

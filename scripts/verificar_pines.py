@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Compara cada pin de `PINES.md` contra los registros vivos e informa qué se movió.
 
 Un pin se pudre solo. El día que se escribió era la última versión publicada; tres
@@ -417,7 +420,7 @@ def _imprimir(r: dict) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(
+    p = argparse.ArgumentParser(epilog='Hecho por Enrique Rocha (@soyenriquerocha) · tododeia.com', 
         description="Compara los pines de PINES.md contra PyPI y la lista de modelos")
     p.add_argument("--pines", type=Path, default=RAIZ / "PINES.md")
     p.add_argument("--json", action="store_true")

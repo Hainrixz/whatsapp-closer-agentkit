@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Las aserciones de `pruebas/caso-01.md`, una función por aserción numerada.
 
 El nombre de cada función lleva el número del paso adelante. Cuando el reporte se pone rojo, la

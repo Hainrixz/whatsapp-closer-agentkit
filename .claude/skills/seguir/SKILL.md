@@ -3,6 +3,7 @@ name: seguir
 description: Retoma una construcción a medias — lee el estado, lo reconcilia contra el disco y sigue desde la fase en curso.
 disable-model-invocation: true
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-ac7bc61a -->
 
 # Seguir
 

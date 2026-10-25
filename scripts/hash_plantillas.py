@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Hashea `plantillas/` y avisa cuando algo se movió sin que nadie lo declare.
 
 Dos modos:

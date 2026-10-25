@@ -3,6 +3,7 @@ name: soltar
 description: Pasa el paso 3 de borrador a automático, después de mostrarte los números que dicen si conviene.
 disable-model-invocation: true
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-ac7bc61a -->
 
 # Soltar
 

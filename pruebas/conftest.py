@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Lo compartido por la suite: el esquema del disco, los fixtures y el arnés del ciclo.
 
 Dos reglas de este archivo.

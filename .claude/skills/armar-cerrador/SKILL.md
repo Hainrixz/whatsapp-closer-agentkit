@@ -3,6 +3,7 @@ name: armar-cerrador
 description: Construye el cerrador de WhatsApp entero, fase por fase, desde el blueprint. Usala en la primera corrida del kit.
 disable-model-invocation: true
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-ac7bc61a -->
 
 # Armar el cerrador
 

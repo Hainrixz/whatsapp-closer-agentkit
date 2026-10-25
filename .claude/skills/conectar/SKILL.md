@@ -3,6 +3,7 @@ name: conectar
 description: Agrega, cambia o rota una credencial, incluido pasar de un proveedor a otro entre meta, zernio y demo.
 disable-model-invocation: true
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-ac7bc61a -->
 
 # Conectar
 

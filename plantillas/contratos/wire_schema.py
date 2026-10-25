@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """El esquema angosto: lo único que sale hacia el modelo.
 
 `contratos/salida.schema.json` es el contrato de validación y no se le puede pasar al modelo,

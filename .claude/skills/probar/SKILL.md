@@ -3,6 +3,7 @@ name: probar
 description: Abre el simulador de chat en la terminal y corre el caso contra el cerrador, sin credenciales.
 disable-model-invocation: true
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-ac7bc61a -->
 
 # Probar
 

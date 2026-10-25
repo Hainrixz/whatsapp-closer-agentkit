@@ -3,6 +3,7 @@ name: configurar
 description: Hace las preguntas 5 a 9 — catálogo, rango de precio, disponibilidad, palabras de escalación y canal interno.
 disable-model-invocation: true
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-ac7bc61a -->
 
 # Configurar
 

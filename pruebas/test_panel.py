@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """La puerta del panel: `PANEL_TOKEN`, las ocho rutas que no se abren sin él, y `/salud`.
 
 El defecto que este archivo existe para hacer fallar es una línea que falta:

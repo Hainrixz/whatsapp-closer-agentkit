@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Las guardas de `enviar()`, cada una en las dos direcciones.
 
 `pruebas/proveedor_falso.py` justifica su diseño entero con esto: un doble que reemplace

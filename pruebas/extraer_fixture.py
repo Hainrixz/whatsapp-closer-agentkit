@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """El puente entre la prosa de un caso y el fixture que lee el código.
 
 `pruebas/caso-01.md` y `pruebas/caso-02.md` traen la entrada del caso adentro de un bloque
@@ -180,7 +183,7 @@ def verificar(caso: str) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(
+    parser = argparse.ArgumentParser(epilog='Hecho por Enrique Rocha (@soyenriquerocha) · tododeia.com', 
         prog="python -m pruebas.extraer_fixture",
         description=(
             "Extrae la entrada de pruebas/<caso>.md a pruebas/fixtures/<caso>.entrada.json, "

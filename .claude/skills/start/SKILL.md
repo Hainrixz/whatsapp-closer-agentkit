@@ -3,6 +3,7 @@ name: start
 description: La puerta de entrada del kit — de un clon recién bajado a un cerrador andando, local o en Railway.
 disable-model-invocation: true
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-ac7bc61a -->
 
 # Start
 

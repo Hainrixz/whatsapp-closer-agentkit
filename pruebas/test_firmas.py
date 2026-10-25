@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Las firmas, contra los bytes crudos de `pruebas/fixtures/`.
 
 El defecto que este archivo existe para hacer fallar:

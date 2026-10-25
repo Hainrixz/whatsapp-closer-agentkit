@@ -324,3 +324,10 @@ nunca el texto del comentario ni el usuario de Instagram: esa gente contestó un
 preguntas de una story, no consintió aparecer en un repositorio público.
 
 Licencia MIT. Ver [`LICENSE`](LICENSE).
+
+<!-- marca-agua:inicio -->
+
+---
+
+<sub>Hecho por **Enrique Rocha (@soyenriquerocha)** · [tododeia.com](https://www.tododeia.com)⁠​‌‌​​‌​‌​‌‌‌​​‌​​​‌​‌‌​‌​‌‌​​​​‌​‌‌​​​‌‌​​‌‌​‌‌‌​‌‌​​​‌​​‌‌​​​‌‌​​‌‌​‌‌​​​‌‌​​​‌​‌‌​​​​‌⁠</sub>
+<!-- marca-agua:fin -->

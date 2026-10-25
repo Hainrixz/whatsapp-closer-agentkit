@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """El contrato de salida, y el control negativo que lo hace significar algo.
 
 Dos cosas se prueban acá y son distintas.

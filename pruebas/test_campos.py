@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Los nueve campos del contrato de salida que hasta esta ronda no afirmaba ningún nodo.
 
 El censo del chequeo 23 —`.venv/bin/python scripts/auditar.py --censo`— corre la suite entera una

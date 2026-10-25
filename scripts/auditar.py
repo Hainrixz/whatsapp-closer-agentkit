@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """La compuerta. Corre en la máquina de quien clona, no en la nuestra.
 
 Se invoca sola como `/revisar` y como última fase de `/armar-cerrador`. Es lo único que separa
@@ -5594,7 +5597,7 @@ def _main_censo(raiz: Path, args) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    p = argparse.ArgumentParser(
+    p = argparse.ArgumentParser(epilog='Hecho por Enrique Rocha (@soyenriquerocha) · tododeia.com', 
         description="La compuerta del cerrador de WhatsApp. Sin red y sin credenciales.")
     p.add_argument("--raiz", type=Path, default=RAIZ, help="raíz del kit (default: este repo)")
     p.add_argument("--formato", choices=("texto", "json"), default="texto")

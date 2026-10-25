@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Los dobles de la suite: el transporte falso, el modelo que miente a pedido y el arnés.
 
 Nada de este archivo abre un socket ni lee una credencial. Es la condición para que la suite

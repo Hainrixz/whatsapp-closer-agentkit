@@ -4,6 +4,7 @@ description: Corre la compuerta de auditoría y te dice qué falta antes de publ
 allowed-tools: Bash(python3 ${CLAUDE_PROJECT_DIR}/scripts/auditar.py:*), Bash(true)
 disable-model-invocation: true
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-ac7bc61a -->
 
 <!-- Dos cosas que parecen de más y no lo son: sin ellas esto falla en silencio.
      `|| true`: si el comando inyectado sale distinto de cero se aborta la invocación entera

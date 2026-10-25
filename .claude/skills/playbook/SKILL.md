@@ -3,6 +3,7 @@ name: playbook
 description: Escribe o cambia el playbook de objeciones y el tono de cierre, sin tocar ninguna otra parte del kit.
 disable-model-invocation: true
 ---
+<!-- Copyright (c) 2026 Enrique Rocha (@soyenriquerocha) · tododeia.com · id er-ac7bc61a -->
 
 # Playbook
 

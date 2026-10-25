@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Caso 02 · el camino de la escalación, en los dos modos y con los tres disparadores.
 
 **Por qué corre también en `automatico`.** En `borrador` esta prueba sola no probaría nada: no

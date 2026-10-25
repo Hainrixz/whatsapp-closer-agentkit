@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """El chat en la terminal. Escribís como cliente y ves por qué el agente hizo lo que hizo.
 
     .venv/bin/python -m pruebas.simulador

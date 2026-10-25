@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Verificación de firmas de webhook. Meta y Zernio.
 
 Python 3.11+. Sin dependencias: solo `hmac` y `hashlib` de la biblioteca estándar.

@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """La bandeja: la fila del pendiente, aprobar, rechazar, y el id que no existe.
 
 **En el modo por defecto del kit, éste es el único camino por el que un borrador se convierte en

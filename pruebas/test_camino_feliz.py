@@ -1,3 +1,6 @@
+# Copyright (c) 2026 Enrique Rocha (@soyenriquerocha)
+# SPDX-License-Identifier: MIT
+# id: er-ac7bc61a
 """Las cuatro superficies donde el kit promete algo y hasta esta ronda nadie miraba que pasara.
 
 La suite prueba con cuidado que las cosas **no** pasen —no se manda sin confirmar, no se escribe
